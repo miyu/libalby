@@ -17,14 +17,17 @@ namespace Shade.Alby
          this.width = width;
          this.height = height;
 
-         for (var y = 0; y < this.height; y++) {
-            for (var x = 0; x < this.width; x++) {
+         for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
                var position = new GridPosition(x, y);
                var cell = new SquareCell(position);
                cells.Add(cell);
             }
          }
       }
+
+      public int Width { get { return width; } }
+      public int Height { get { return height; } }
 
       public IEnumerable<SquareCell> GetNeighboringCells(GridPosition position) { return GetNeighboringCellPositions(position).Select(Get); }
 
@@ -53,15 +56,5 @@ namespace Shade.Alby
       public SquareCell Get(int x, int y) { return this.cells[y * width + x]; }
 
       public bool IsValidCell(int x, int y) { return x.WithinIE(0, width) && y.WithinIE(0, height); }
-   }
-
-   public class SquareCell
-   {
-      public readonly GridPosition position;
-
-      public SquareCell(GridPosition position)
-      {
-         this.position = position;
-      }
    }
 }

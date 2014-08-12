@@ -53,6 +53,20 @@
     <Compile Include="SquareGridTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libtestutil\libtestutil.csproj">
+      <Project>{0060e29c-db43-45a8-97af-17d4aef0dad7}</Project>
+      <Name>libtestutil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
+      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
+      <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libalby.csproj">
+      <Project>{b70aa658-a5ae-4fd4-b7c1-bbbcc72d3621}</Project>
+      <Name>libalby</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

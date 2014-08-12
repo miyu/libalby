@@ -31,9 +31,9 @@ namespace libalby.tests
             for (var x = 0; x < GRID_WIDTH; x++)
             {
                var cell = testObj.Get(x, y);
-               Console.WriteLine("Cell {0} {1} has {2} {3}", x, y, cell.position.X, cell.position.Y);
-               assertEquals(x, cell.position.X);
-               assertEquals(y, cell.position.Y);
+               Console.WriteLine("Cell {0} {1} has {2} {3}", x, y, cell.Position.X, cell.Position.Y);
+               assertEquals(x, cell.Position.X);
+               assertEquals(y, cell.Position.Y);
             }
          }
       }
