@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ItzWarty;
 using ItzWarty.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shade.Alby;
 
-namespace libalby.tests
+namespace Shade.Alby
 {
    [TestClass]
    public class SquareGridTest : MockitoLike
@@ -30,7 +28,7 @@ namespace libalby.tests
          {
             for (var x = 0; x < GRID_WIDTH; x++)
             {
-               var cell = testObj.Get(x, y);
+               var cell = testObj.GetCell(x, y);
                Console.WriteLine("Cell {0} {1} has {2} {3}", x, y, cell.Position.X, cell.Position.Y);
                assertEquals(x, cell.Position.X);
                assertEquals(y, cell.Position.Y);

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}</ProjectGuid>
+    <ProjectGuid>{85CFC205-5246-447E-A590-877556216F3C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Shade.Alby</RootNamespace>
-    <AssemblyName>libalby</AssemblyName>
+    <RootNamespace>Alby.Gui</RootNamespace>
+    <AssemblyName>libalby.gui</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,25 +43,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
-    <Compile Include="CellConnector.cs" />
-    <Compile Include="DebugGraphicsContext.cs" />
-    <Compile Include="Dungeon.cs" />
-    <Compile Include="Grid.cs" />
-    <Compile Include="GridPosition.cs" />
-    <Compile Include="SquareGridManipulator.cs" />
-    <Compile Include="IGridVisitor.cs" />
+    <Compile Include="DungeonGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GridRenderer.cs" />
+    <Compile Include="GridRendererFactory.cs" />
+    <Compile Include="GridDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GridRenderTarget.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SquareCell.cs" />
+    <Compile Include="SquareGridRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libwarty\ItzWarty.csproj">
-      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
-      <Name>ItzWarty</Name>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libalby.csproj">
+      <Project>{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}</Project>
+      <Name>libalby</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

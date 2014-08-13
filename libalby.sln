@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libtestutil", "..\libtestut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libalby", "libalby.csproj", "{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libalby.simple-renderer", "libalby.gui\libalby.simple-renderer.csproj", "{85CFC205-5246-447E-A590-877556216F3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,18 @@ Global
 		{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
 		{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}.TempBuild|Any CPU.Build.0 = Release|Any CPU
 		{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}.TempBuild|x86.ActiveCfg = Release|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.DummyPlatform|Any CPU.ActiveCfg = Debug|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.DummyPlatform|Any CPU.Build.0 = Debug|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.DummyPlatform|x86.ActiveCfg = Debug|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.Release|x86.ActiveCfg = Release|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.TempBuild|Any CPU.Build.0 = Release|Any CPU
+		{85CFC205-5246-447E-A590-877556216F3C}.TempBuild|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
