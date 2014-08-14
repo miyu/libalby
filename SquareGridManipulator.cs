@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace Shade.Alby
       private DebugGraphicsContext debugGraphicsContext = null;
       public SquareGridManipulator(SquareGrid grid) { this.grid = grid; }
       public void SetDebugGraphicsContext(DebugGraphicsContext value) { this.debugGraphicsContext = value; }
+
+      public void CutLine(PointF p1, PointF p2) { CutLine(p1.X, p1.Y, p2.X, p2.Y); }
 
       public void CutLine(float x1, float y1, float x2, float y2)
       {
@@ -92,11 +95,11 @@ namespace Shade.Alby
                   cx++;
                   var cell = grid.GetCellOrNull(cx, cy);
                   if (cell != null) {
-                  if (upward) {
+                     if (upward) {
                         if (cell.SouthConnector != null) {
                            cell.SouthConnector.Break();
                         }
-                  } else {
+                     } else {
                         if (cell.NorthConnector != null) {
                            cell.NorthConnector.Break();
                         }
@@ -139,6 +142,18 @@ namespace Shade.Alby
             for (var y = startY; y <= endY; y++) {
                grid.GetCell(x, y).EastConnector.Break();
             }
+         }
+      }
+
+      public void CutParametric(ParametricFunction parametricFunction)
+      {
+         PointF? lastPoint = null;
+         for (float t = parametricFunction.TInitial; t <= parametricFunction.TFinal; t = parametricFunction.NextT(t)) {
+            var point = parametricFunction.PointAt(t);
+            if (lastPoint != null) {
+               CutLine(lastPoint.Value, point);
+            }
+            lastPoint = point;
          }
       }
    }
