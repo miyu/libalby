@@ -25,12 +25,7 @@ namespace Alby.Gui
          this.form = new MainForm();
          this.controller = new SimpleRendererController(form);
          this.controller.GenerateGrid();
-         //this.controller.DrawTrapezoid();
          this.controller.DrawSpiral();
-         //this.controller.DrawHorizontalLine();
-         //this.controller.DrawVerticalLine();
-         //this.controller.DrawHorizontalLineSnapped();
-         //this.controller.DrawVerticalLineSnapped();
       }
 
       public void Run()
@@ -84,27 +79,39 @@ namespace Alby.Gui
       public void DrawSpiral()
       {
          var pi = (float)Math.PI;
-         var drdt = 0.7f;
+         var drdt = 1.3f;
          var d0dt = 2 * pi / 6.0f;
          var xc = 25;
          var yc = 15;
-         Func<float, PointF> f = (t) => {
-            var r = drdt * t;
+         var rInitial = 1.5f;
+         Func<float, PointF> f = (t) =>
+         {
+            var r = rInitial + drdt * t;
             var theta = d0dt * t;
             return new PointF(xc + r * (float)Math.Sin(theta), yc + r * (float)Math.Cos(theta));
          };
-         PointF? last = null;
-         for(var t = 1f; t < 6f; t += 0.05f) {
+         Func<float, PointF> f2 = (t) => {
+            var dtPerRevolution = 2 * pi / d0dt;
+            var drPerRevolution = drdt * dtPerRevolution;
+            var r = rInitial + drdt * t;
+            var theta = d0dt * t + Math.PI;
+            return new PointF(xc + r * (float)Math.Sin(theta), yc + r * (float)Math.Cos(theta));
+         };
+         PointF? lastF = null;
+         PointF? lastF2 = null;
+         for (var t = 0f; t < 30f; t += 0.05f) {
             var point = f(t);
-
-            if (last != null) {
-               var x1 = point.X;
-               var y1 = point.Y;
-               var x2 = last.Value.X;
-               var y2 = last.Value.Y;
-               this.manipulator.CutLine(x1, y1, x2, y2);
+            if (lastF != null) {
+               this.manipulator.CutLine(point.X, point.Y, lastF.Value.X, lastF.Value.Y);
             }
-            last = point;
+            lastF = point;
+
+            var point2 = f2(t);
+            if (lastF2 != null) {
+               this.manipulator.CutLine(point2.X, point2.Y, lastF2.Value.X, lastF2.Value.Y);
+            }
+
+            lastF2 = point2;
          }
       }
    }

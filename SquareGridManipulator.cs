@@ -17,13 +17,10 @@ namespace Shade.Alby
 
       public void CutLine(float x1, float y1, float x2, float y2)
       {
-         Console.WriteLine("!" + (debugGraphicsContext == null));
-         Console.WriteLine("Cutline {0},{1} {2},{3}", x1, y1, x2, y2);
          if (debugGraphicsContext != null) {
             debugGraphicsContext.Line(new PointF(x1, y1), new PointF(x2, y2));
          }
          if (x1 > x2) {
-            Console.WriteLine("RECURSIVE");
             CutLine(x2, y2, x1, y1);
          } else {
             // detect snapped endpoints
@@ -51,7 +48,6 @@ namespace Shade.Alby
             while (x < x2 || (y < y2 == upward)) {
                int nextX = cx + 1;
                var deToDx = dedx * (nextX - x);
-               Console.WriteLine("AT " + cx + " " + cy + " with " + x + " " + y);
 
                // Hit horizontal connector
                if (e + deToDx >= 1.0f) {
@@ -71,9 +67,13 @@ namespace Shade.Alby
                      debugGraphicsContext.PlotPoint(new PointF(x, y));
                   
                   cy += yStep;
-                  grid.GetCell(cx, cy).EastConnector.Break();
 
-                  Console.WriteLine(" => " + cx + " " + cy + " with " + x + " " + y);
+                  var cell = grid.GetCellOrNull(cx, cy);
+                  if (cell != null) {
+                     if (cell.EastConnector != null) {
+                        cell.EastConnector.Break();
+                     }
+                  }
                } else {
                   if (nextX > x2) {
                      // we're done
@@ -90,13 +90,18 @@ namespace Shade.Alby
                      debugGraphicsContext.PlotPoint(new PointF(x, y));
 
                   cx++;
+                  var cell = grid.GetCellOrNull(cx, cy);
+                  if (cell != null) {
                   if (upward) {
-                     grid.GetCell(cx, cy).SouthConnector.Break();
+                        if (cell.SouthConnector != null) {
+                           cell.SouthConnector.Break();
+                        }
                   } else {
-                     grid.GetCell(cx, cy).NorthConnector.Break();
+                        if (cell.NorthConnector != null) {
+                           cell.NorthConnector.Break();
+                        }
+                     }
                   }
-
-                  Console.WriteLine(" => " + cx + " " + cy + " with " + x + " " + y);
                }
             }
          }
@@ -108,11 +113,17 @@ namespace Shade.Alby
          int snapY = (int)Math.Round(y1);
          if (Math.Abs(x1 - snapX) < 0.001) {
             var y = (int)Math.Floor(y1);
-            grid.GetCell(snapX, y).SouthConnector.Break();
+            var cell = grid.GetCellOrNull(snapX, y);
+            if (cell != null && cell.SouthConnector != null) {
+               cell.SouthConnector.Break();
+            }
          }
          if (Math.Abs(y1 - snapY) < 0.001) {
             var x = (int)Math.Floor(x1);
-            grid.GetCell(x, snapY).EastConnector.Break();
+            var cell = grid.GetCellOrNull(x, snapY);
+            if (cell != null && cell.EastConnector != null) {
+               cell.EastConnector.Break();
+            }
          }
       }
 

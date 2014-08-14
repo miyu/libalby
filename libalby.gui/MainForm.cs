@@ -22,7 +22,7 @@ namespace Alby.Gui
 
          this.gridDisplay = new GridDisplay();
          this.gridContainer.Controls.Add(this.gridDisplay);
-         this.gridDisplay.Zoom = 3.0f;
+         this.gridDisplay.Zoom = 1.0f;
       }
 
       public void SetController(SimpleRendererController controller) { this.controller = controller; }
