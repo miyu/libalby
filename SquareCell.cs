@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Shade.Alby
 {
    public class SquareCell : Cell
@@ -27,5 +29,22 @@ namespace Shade.Alby
       public void SetSouthConnector(CellConnector connector) { southConnector = connector; }
       public void SetEastConnector(CellConnector connector) { eastConnector = connector; }
       public void SetWestConnector(CellConnector connector) { westConnector = connector; }
+
+      public override IReadOnlyCollection<CellConnector> Connectors
+      {
+         get
+         {
+            var result = new List<CellConnector>(4);
+            if (NorthConnector != null)
+               result.Add(NorthConnector);
+            if (SouthConnector != null)
+               result.Add(SouthConnector);
+            if (EastConnector != null)
+               result.Add(EastConnector);
+            if (WestConnector != null)
+               result.Add(WestConnector);
+            return result;
+         }
+      }
    }
 }

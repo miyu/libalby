@@ -78,41 +78,9 @@ namespace Alby.Gui
 
       public void DrawSpiral()
       {
-         var pi = (float)Math.PI;
-         var drdt = 1.3f;
-         var d0dt = 2 * pi / 6.0f;
-         var xc = 25;
-         var yc = 15;
-         var rInitial = 1.5f;
-         Func<float, PointF> f = (t) =>
-         {
-            var r = rInitial + drdt * t;
-            var theta = d0dt * t;
-            return new PointF(xc + r * (float)Math.Sin(theta), yc + r * (float)Math.Cos(theta));
-         };
-         Func<float, PointF> f2 = (t) => {
-            var dtPerRevolution = 2 * pi / d0dt;
-            var drPerRevolution = drdt * dtPerRevolution;
-            var r = rInitial + drdt * t;
-            var theta = d0dt * t + Math.PI;
-            return new PointF(xc + r * (float)Math.Sin(theta), yc + r * (float)Math.Cos(theta));
-         };
-         PointF? lastF = null;
-         PointF? lastF2 = null;
-         for (var t = 0f; t < 30f; t += 0.05f) {
-            var point = f(t);
-            if (lastF != null) {
-               this.manipulator.CutLine(point.X, point.Y, lastF.Value.X, lastF.Value.Y);
-            }
-            lastF = point;
-
-            var point2 = f2(t);
-            if (lastF2 != null) {
-               this.manipulator.CutLine(point2.X, point2.Y, lastF2.Value.X, lastF2.Value.Y);
-            }
-
-            lastF2 = point2;
-         }
+         this.manipulator.CutParametric(new SpiralParametricFunction(0.75f, 10.5f, 3.0f, 25, 15));
+         this.manipulator.CutLine(25 + 3 * 3.5f, 15, 25 + 3 * 2.5f, 15);
+         this.manipulator.FillRegion(25, 15);
       }
    }
 

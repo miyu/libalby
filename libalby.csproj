@@ -48,6 +48,9 @@
     <Compile Include="Dungeon.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridPosition.cs" />
+    <Compile Include="GridStrategy.cs" />
+    <Compile Include="ParametricFunction.cs" />
+    <Compile Include="SpiralParametricFunction.cs" />
     <Compile Include="SquareGridManipulator.cs" />
     <Compile Include="IGridVisitor.cs" />
     <Compile Include="Program.cs" />

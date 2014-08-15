@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ItzWarty;
 
 namespace Shade.Alby
 {
@@ -155,6 +157,46 @@ namespace Shade.Alby
             }
             lastPoint = point;
          }
+      }
+
+      public void FillRegion(int x, int y)
+      {
+         var random = new Random();
+         var initialSeed = grid.GetCell(x, y); // (also our entrance)
+         var seeds = new List<Cell>();
+         seeds.Add(initialSeed);
+
+         var cells = new List<Cell>(); // includes all seeds - any room which has a clearly defined entrance
+         cells.Add(initialSeed);
+
+         while (seeds.Any()) {
+            var seed = seeds.ElementAt(GetRandomIntegerWeightedTowardEnd(seeds.Count, random));
+            var candidates = seed.Connectors.Where((c) => c.State == ConnectorState.Disconnected && !cells.Contains(c.Other(seed))).ToArray();
+
+            if (!candidates.Any()) {
+               seeds.Remove(seed);
+               continue;
+            }
+
+            CellConnector connector;
+            if (candidates.Count() == 1) {
+               seeds.Remove(seed);
+               connector = candidates.First();
+            } else {
+               connector = candidates.SelectRandom();
+            }
+
+            connector.Connect();
+            var cell = connector.Other(seed);
+            seeds.Add(cell);
+            cells.Add(cell);
+         }
+      }
+
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      protected int GetRandomIntegerWeightedTowardEnd(int n, Random random)
+      {
+         return (int)(n * Math.Sqrt(Math.Sqrt(random.NextDouble())));
       }
    }
 }

@@ -87,11 +87,11 @@ namespace Alby.Gui
          if (connectorState == ConnectorState.Connected)
             return Pens.Lime;
          else if (connectorState == ConnectorState.Disconnected)
-            return Pens.Gray;
+            return Pens.DarkBlue;
          else if (connectorState == ConnectorState.Broken)
             return Pens.Red;
          else
-            return Pens.DarkGray;
+            return Pens.Magenta;
       }
    }
 }
