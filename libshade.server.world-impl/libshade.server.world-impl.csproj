@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{DE31DC1A-BB59-43F9-B944-4F80148E0ED3}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Shade.Alby</RootNamespace>
-    <AssemblyName>libalby</AssemblyName>
+    <RootNamespace>Shade.Server.World</RootNamespace>
+    <AssemblyName>libshade.server.world-impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,10 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,7 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,28 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
-    <Compile Include="CellConnector.cs" />
-    <Compile Include="DebugGraphicsContext.cs" />
-    <Compile Include="Dungeon.cs" />
-    <Compile Include="Grid.cs" />
-    <Compile Include="GridPosition.cs" />
-    <Compile Include="GridStrategy.cs" />
-    <Compile Include="ParametricFunction.cs" />
-    <Compile Include="SpiralParametricFunction.cs" />
-    <Compile Include="SquareGridManipulator.cs" />
-    <Compile Include="IGridVisitor.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="WorldServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SquareCell.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\libwarty\ItzWarty.csproj">
-      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
-      <Name>ItzWarty</Name>
+    <ProjectReference Include="..\libshade.server.world-api\libshade.server.world-api.csproj">
+      <Project>{5F63E7B9-69FB-4A83-871A-D5018C164333}</Project>
+      <Name>libshade.server.world-api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

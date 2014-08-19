@@ -4,7 +4,7 @@ using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
-namespace Alby.Gui
+namespace Shade.Helios
 {
    /// <summary>
    /// Component responsible for the scene rendering.
@@ -21,11 +21,8 @@ namespace Alby.Gui
       private Texture2D _planeTexture;
       private Matrix _planeTransform;
 
-      private GeometricPrimitive _hConnector;
-      private GeometricPrimitive _vConnector;
-
       private BasicEffect _basicEffect;
-      private List<IRenderable> renderables = new List<IRenderable>();
+      //private List<IRenderable> renderables = new List<IRenderable>();
 
       /// <summary>
       /// Initialize in constructor anything that doesn't depend on other services.
@@ -92,10 +89,6 @@ namespace Alby.Gui
          //_basicEffect.Texture = _planeTexture;
          //_basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(2, 0, 2f);
          //_plane.Draw(_basicEffect);  
-
-         foreach (var renderable in renderables) {
-            renderable.Render();
-         }
       }
 
       /// <summary>
@@ -153,10 +146,10 @@ namespace Alby.Gui
       private void LoadConnector()
       {
          // build the plane geometry of the specified size and subdivision segments
-         _hConnector = ToDisposeContent(GeometricPrimitive.Plane.New(GraphicsDevice, 0.2f, 0.15f));
-         _vConnector = ToDisposeContent(GeometricPrimitive.Plane.New(GraphicsDevice, 0.15f, 0.2f));
+         //_hConnector = ToDisposeContent(GeometricPrimitive.Plane.New(GraphicsDevice, 0.2f, 0.15f));
+         //_vConnector = ToDisposeContent(GeometricPrimitive.Plane.New(GraphicsDevice, 0.15f, 0.2f));
 
-         _connectedTexture = Content.Load<Texture2D>("lime.jpg");
+         //_connectedTexture = Content.Load<Texture2D>("lime.jpg");
 
          // load the texture using game's content manager
          //_planeTexture = Content.Load<Texture2D>("GeneticaMortarlessBlocks.jpg");
@@ -165,42 +158,42 @@ namespace Alby.Gui
          _planeTransform = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(0f, 0f, 0f);
       }
 
-      private float planeOffset = 0;
-      private float planeOffsty = 0;
-      private float connectorCenterOffset = 0.6f;
-      private Texture2D _connectedTexture;
-
-      public void RenderPlane(int x, int y)
-      {
-         // set the parameters for plane drawing and draw it using the basic effect
-         _basicEffect.Texture = _planeTexture;
-         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation((x + planeOffset) * 1.2f, 0, (y + planeOffsty) * 1.2f);
-         _plane.Draw(_basicEffect);
-      }
-
-      public void RenderEastConnector(int x, int y)
-      {
-         // set the parameters for plane drawing and draw it using the basic effect
-         _basicEffect.Texture = _connectedTexture;
-         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation((x + planeOffset) * 1.2f + 0.6f, 0, (y + planeOffsty) * 1.2f);
-         _hConnector.Draw(_basicEffect);
-      }
-
-      public void RenderSouthConnector(int x, int y)
-      {
-         // set the parameters for plane drawing and draw it using the basic effect
-         _basicEffect.Texture = _connectedTexture;
-         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation((x + planeOffset) * 1.2f, 0, (y + planeOffsty) * 1.2f + 0.6f);
-         _vConnector.Draw(_basicEffect);
-      }
-
-      public void ImportGrid(SquareGrid grid, int cx, int cy)
-      {
-         planeOffset = -cx + 0.5f;
-         planeOffsty = -cy + 0.5f;
-         foreach (var cell in grid.Cells) {
-            this.renderables.Add(new SquareCellRenderable(cell, this));
-         }
-      }
+//      private float planeOffset = 0;
+//      private float planeOffsty = 0;
+//      private float connectorCenterOffset = 0.6f;
+//      private Texture2D _connectedTexture;
+//
+//      public void RenderPlane(int x, int y)
+//      {
+//         // set the parameters for plane drawing and draw it using the basic effect
+//         _basicEffect.Texture = _planeTexture;
+//         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation((x + planeOffset) * 1.2f, 0, (y + planeOffsty) * 1.2f);
+//         _plane.Draw(_basicEffect);
+//      }
+//
+//      public void RenderEastConnector(int x, int y)
+//      {
+//         // set the parameters for plane drawing and draw it using the basic effect
+//         _basicEffect.Texture = _connectedTexture;
+//         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation((x + planeOffset) * 1.2f + 0.6f, 0, (y + planeOffsty) * 1.2f);
+//         _hConnector.Draw(_basicEffect);
+//      }
+//
+//      public void RenderSouthConnector(int x, int y)
+//      {
+//         // set the parameters for plane drawing and draw it using the basic effect
+//         _basicEffect.Texture = _connectedTexture;
+//         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation((x + planeOffset) * 1.2f, 0, (y + planeOffsty) * 1.2f + 0.6f);
+//         _vConnector.Draw(_basicEffect);
+//      }
+//
+//      public void ImportGrid(SquareGrid grid, int cx, int cy)
+//      {
+//         planeOffset = -cx + 0.5f;
+//         planeOffsty = -cy + 0.5f;
+//         foreach (var cell in grid.Cells) {
+//            this.renderables.Add(new SquareCellRenderable(cell, this));
+//         }
+//      }
    }
 }

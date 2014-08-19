@@ -7,8 +7,8 @@
     <ProjectGuid>{C2D1DDD1-ECBF-4AAB-B8D4-EE148CB18128}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>libalby._3d_renderer</RootNamespace>
-    <AssemblyName>libalby.3d-renderer</AssemblyName>
+    <RootNamespace>Shade.Client</RootNamespace>
+    <AssemblyName>client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>12f75242</NuGetPackageImportStamp>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
     </Reference>
@@ -65,19 +69,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CameraProvider.cs" />
-    <Compile Include="ICameraService.cs" />
     <Compile Include="Program.cs">
       <SubType>
       </SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SceneRenderer.cs" />
-    <Compile Include="ShadeGame.cs" />
-    <Compile Include="SquareCellRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +97,49 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
+      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
+      <Name>ItzWarty</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libalby.csproj">
       <Project>{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}</Project>
       <Name>libalby</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libhelios\libhelios.csproj">
+      <Project>{1AE44BCA-78B1-4B19-BDAD-752EFE931B5A}</Project>
+      <Name>libhelios</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.client\libshade.client.csproj">
+      <Project>{D92C8523-8417-4A52-A8BC-70A53159645B}</Project>
+      <Name>libshade.client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.common\libshade.common-api.csproj">
+      <Project>{482C98A1-FB26-4DB0-8B60-7A14924DC223}</Project>
+      <Name>libshade.common-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server-api\libshade.server-api.csproj">
+      <Project>{D83B9C88-F248-44D9-97B9-E957BC8E1637}</Project>
+      <Name>libshade.server-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server-impl\libshade.server-impl.csproj">
+      <Project>{7ABD9967-0409-43B3-A675-D6EBE5BA10A7}</Project>
+      <Name>libshade.server-impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.account-api\libshade.server.account-api.csproj">
+      <Project>{85427D5C-9FBD-49FB-9980-C674E91BF0FE}</Project>
+      <Name>libshade.server.account-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.dungeon-api\libshade.server.dungeon-api.csproj">
+      <Project>{92AF0185-EC38-43E2-854F-C72E160CC8CE}</Project>
+      <Name>libshade.server.dungeon-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.level-api\libshade.server.level-api.csproj">
+      <Project>{97A0E167-B500-440D-80F0-4BB751914F74}</Project>
+      <Name>libshade.server.level-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.nierian-api\libshade.server.nierian-api.csproj">
+      <Project>{A3483AD2-5BE2-4A5F-9C80-EDCD01AE5B84}</Project>
+      <Name>libshade.server.nierian-api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

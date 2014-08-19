@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace Alby.Gui
+namespace Shade.Helios
 {
    internal interface ICameraService
    {

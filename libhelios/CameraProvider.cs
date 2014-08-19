@@ -1,7 +1,7 @@
 ﻿using SharpDX;
 using SharpDX.Toolkit;
 
-namespace Alby.Gui
+namespace Shade.Helios
 {
    internal sealed class CameraProvider : GameSystem, ICameraService
    {

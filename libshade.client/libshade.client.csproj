@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D92C8523-8417-4A52-A8BC-70A53159645B}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Shade.Alby</RootNamespace>
-    <AssemblyName>libalby</AssemblyName>
+    <RootNamespace>Shade.Client</RootNamespace>
+    <AssemblyName>libshade.client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>805d65a5</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +24,6 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,9 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\packages\SharpDX.2.6.2\Bin\DirectX11-Signed-net40\SharpDX.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,31 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
-    <Compile Include="CellConnector.cs" />
-    <Compile Include="DebugGraphicsContext.cs" />
-    <Compile Include="Dungeon.cs" />
-    <Compile Include="Grid.cs" />
-    <Compile Include="GridPosition.cs" />
-    <Compile Include="GridStrategy.cs" />
-    <Compile Include="ParametricFunction.cs" />
-    <Compile Include="SpiralParametricFunction.cs" />
-    <Compile Include="SquareGridManipulator.cs" />
-    <Compile Include="IGridVisitor.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="GameControllerService.cs" />
+    <Compile Include="GameControllerServiceImpl.cs" />
+    <Compile Include="ClientLevelService.cs" />
+    <Compile Include="IShadeClient.cs" />
+    <Compile Include="ClientLevelServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SquareCell.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\libwarty\ItzWarty.csproj">
-      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
-      <Name>ItzWarty</Name>
+    <ProjectReference Include="..\libshade.common\libshade.common-api.csproj">
+      <Project>{482C98A1-FB26-4DB0-8B60-7A14924DC223}</Project>
+      <Name>libshade.common-api</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\libalby\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\libalby\packages\SharpDX.2.6.2\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\libalby\packages\SharpDX.2.6.2\build\SharpDX.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
