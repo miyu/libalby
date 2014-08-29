@@ -1,7 +1,10 @@
-﻿namespace Shade.Server.World
+﻿using Shade.Server.Nierians;
+
+namespace Shade.Server.World
 {
     public interface WorldService
     {
-       //void EnterMap();
+       WorldLoginResult Enter(NierianKey nierianKey);
+       void Leave(NierianKey key);
     }
 }

@@ -141,6 +141,10 @@
       <Project>{A3483AD2-5BE2-4A5F-9C80-EDCD01AE5B84}</Project>
       <Name>libshade.server.nierian-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libshade.server.world-api\libshade.server.world-api.csproj">
+      <Project>{5F63E7B9-69FB-4A83-871A-D5018C164333}</Project>
+      <Name>libshade.server.world-api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />

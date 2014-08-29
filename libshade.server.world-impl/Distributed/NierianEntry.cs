@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shade.Server.Accounts
+namespace Shade.Server.World.Distributed
 {
-   public interface AccountKey
+   class NierianEntry
    {
-      string ShardId { get; }
-      uint AccountId { get; }
    }
 }

@@ -7,8 +7,7 @@ using Shade.Server.Accounts;
 
 namespace Shade.Server.Nierians
 {
-   public interface ShardNierianService
+   public interface ShardNierianService : NierianService
    {
-      NierianKey CreateNierian(AccountKey accountKey, string nierianName);
    }
 }

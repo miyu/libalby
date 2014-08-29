@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
-using libshade.server;
 using NLog;
 using Shade.Helios;
 using Shade.Helios.State;
 using Shade.Server;
 using Shade.Server.Accounts;
 using Shade.Server.Dungeon;
+using Shade.Server.Level;
 using Shade.Server.Nierians;
+using Shade.Server.World;
 using SharpDX;
 
 namespace Shade.Client
@@ -18,7 +20,7 @@ namespace Shade.Client
       private static void Main(string[] args)
       {
          Application.EnableVisualStyles();
-         Console.WindowWidth = Console.BufferWidth = 140;
+         Console.WindowWidth = Console.BufferWidth = 200;
 
          using (var game = new Client()) {
             game.Run();
@@ -33,7 +35,8 @@ namespace Shade.Client
       private readonly ShadeServiceLocator shadeServiceLocator;
       private readonly AccountService accountService;
       private readonly NierianService nierianService;
-      private readonly LevelService levelService;
+      private readonly WorldService worldService;
+      private readonly LevelInstance levelInstance;
       private readonly DungeonService dungeonService;
 
       private readonly ClientLevelService clientLevelService;
@@ -47,7 +50,8 @@ namespace Shade.Client
          shadeServiceLocator = new ShadeServiceLocatorImpl(platformConfiguration);
          accountService = shadeServiceLocator.AccountService;
          nierianService = shadeServiceLocator.NierianService;
-         levelService = shadeServiceLocator.LevelService;
+         worldService = shadeServiceLocator.WorldServices.First();
+         levelInstance = shadeServiceLocator.LevelInstance;
          dungeonService = shadeServiceLocator.DungeonService;
 
          // Client-side stuff
@@ -57,13 +61,15 @@ namespace Shade.Client
 
       protected override void HandleGameInitialize()
       {
-         base.HandleGameInitialize();
-
+         // initialize server stuff
          var accountKey = accountService.CreateAccount("LOCAL", "ItzWarty");
          var nierianKey = nierianService.CreateNierian(accountKey, "Warty");
+         var nierians = nierianService.EnumerateNieriansByAccount(accountKey);
 
-         logger.Info("Create Account " + accountKey + " and Nierian " + nierianKey);
+         // initialize client stuff
+         base.HandleGameInitialize();
 
+         // var loginResult = worldService.Enter(nierianKey);s
          SetTitle("Engine");
       }
 

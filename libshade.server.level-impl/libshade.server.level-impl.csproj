@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LevelServiceImpl.cs" />
+    <Compile Include="LevelInstanceImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
@@ -67,6 +67,10 @@
     <ProjectReference Include="..\libshade.server.level-api\libshade.server.level-api.csproj">
       <Project>{97A0E167-B500-440D-80F0-4BB751914F74}</Project>
       <Name>libshade.server.level-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.nierian-api\libshade.server.nierian-api.csproj">
+      <Project>{A3483AD2-5BE2-4A5F-9C80-EDCD01AE5B84}</Project>
+      <Name>libshade.server.nierian-api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

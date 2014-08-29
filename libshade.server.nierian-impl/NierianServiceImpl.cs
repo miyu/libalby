@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Shade.Server.Accounts;
 using ItzWarty;
+using Shade.Server.Accounts.DataTransferObjects;
+using Shade.Server.Nierians.DTOs;
 
 namespace Shade.Server.Nierians
 {
    public class NierianServiceImpl : NierianService
    {
+      private static Logger logger = LogManager.GetCurrentClassLogger();
+
       private Dictionary<string, ShardNierianServiceImpl> shardNierianServicesByShardId = new Dictionary<string, ShardNierianServiceImpl>();
 
       public NierianServiceImpl(ShadeServiceLocator shadeServiceLocator, PlatformConfiguration platformConfiguration)
@@ -28,25 +34,33 @@ namespace Shade.Server.Nierians
          shardNierianServicesByShardId.Add(shardId, shardNierianSerice);
       }
 
-      public NierianKey CreateNierian(AccountKey accountKey, string nierianName)
+      public NierianIdV1 CreateNierian(string shardId, ulong accountId, string nierianName)
       {
-         var shardNierianService = shardNierianServicesByShardId.GetValueOrDefault(accountKey.ShardId);
+         var shardNierianService = shardNierianServicesByShardId.GetValueOrDefault(shardId);
 
-         NierianKey nierianKey = null;
+         NierianIdV1 nierianKey = null;
          if (shardNierianService != null) {
-            nierianKey = shardNierianService.CreateNierian(accountKey, nierianName);
+            nierianKey = shardNierianService.CreateNierian(accountId, nierianName);
          }
+
+         logger.Info("Create NierianEntry {0} for account {1} => key {2}", nierianName, shardId + "/" + accountId, nierianKey);
          return nierianKey;
       }
 
-      public void SetNierianName(Nierian nierian, string name)
+      public void SetNierianName(NierianEntry nierianEntry, string name)
       {
-         var shardNierianService = shardNierianServicesByShardId.GetValueOrDefault(nierian.Key.ShardId);
+         var shardNierianService = shardNierianServicesByShardId.GetValueOrDefault(nierianEntry.Key.ShardId);
          if (shardNierianService != null) {
-            shardNierianService.SetNierianName(nierian, name);
+            shardNierianService.SetNierianName(nierianEntry, name);
          }
       }
 
-      public IReadOnlyCollection<Nierian> GetNieriansByAccount(AccountKey accountKey) { throw new NotImplementedException(); }
+      public IEnumerable<NierianEntry> EnumerateNieriansByAccount(string shardId, ulong accountId)
+      {
+         var shardNierianService = shardNierianServicesByShardId.GetValueOrDefault(shardId);
+         if (shardNierianService != null)
+            return shardNierianService.EnumerateNieriansByAccount(accountId);
+         return Enumerable.Empty<NierianEntry>();
+      }
    }
 }

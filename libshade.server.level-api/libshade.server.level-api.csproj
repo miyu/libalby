@@ -40,13 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LevelService.cs" />
+    <Compile Include="LevelInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libshade.common\libshade.common-api.csproj">
       <Project>{482C98A1-FB26-4DB0-8B60-7A14924DC223}</Project>
       <Name>libshade.common-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.nierian-api\libshade.server.nierian-api.csproj">
+      <Project>{A3483AD2-5BE2-4A5F-9C80-EDCD01AE5B84}</Project>
+      <Name>libshade.server.nierian-api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

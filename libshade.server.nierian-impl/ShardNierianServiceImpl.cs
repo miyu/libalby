@@ -1,37 +1,50 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using ItzWarty;
 using ItzWarty.Collections;
 using Shade.Server.Accounts;
+using Shade.Server.Nierians.Distributed;
+using Shade.Server.Nierians.DTOs;
+using Shade.Server.SpecializedCache;
 
 namespace Shade.Server.Nierians
 {
    public class ShardNierianServiceImpl : ShardNierianService
    {
       private readonly string shardId;
-      private readonly Dictionary<uint, Nierian> nieriansByNierianId = new Dictionary<uint, Nierian>();
-      private readonly MultiValueDictionary<string, Nierian> nieriansByAccountKey = new MultiValueDictionary<string, Nierian>();
+      private readonly PlatformCacheService platformCacheService;
+      private readonly SpecializedCacheService specializedCacheService;
 
-      private uint nierianIdCounter = 0;
+      private readonly Caches caches;
+      private readonly ShardNierianCache shardNierianCache;
 
-      public ShardNierianServiceImpl(string shardId) { this.shardId = shardId; }
-
-      public NierianKey CreateNierian(AccountKey accountKey, string nierianName)
+      public ShardNierianServiceImpl(string shardId, PlatformCacheService platformCacheService, SpecializedCacheService specializedCacheService)
       {
-         var key = BuildKey(accountKey);
-         uint nierianId = nierianIdCounter++;
-         var nierianKey = new NierianKeyImpl(shardId, accountKey.AccountId, nierianId);
-         var nierian = new NierianImpl(nierianKey, nierianName);
-         nieriansByNierianId.Add(nierianId, nierian);
-         nieriansByAccountKey.Add(key, nierian);
-         return nierianKey;
+         this.shardId = shardId;
+         this.platformCacheService = platformCacheService;
+         this.specializedCacheService = specializedCacheService;
+
+         this.caches = new Caches(shardId, platformCacheService, specializedCacheService);
+         this.shardNierianCache = new ShardNierianCache(shardId, caches.AccountCache, caches.AccountIdCountingCache);
       }
 
-      public void SetNierianName(Nierian nierianId, string name)
+      public NierianIdV1 CreateNierian(ulong accountId, string nierianName) { return shardNierianCache.CreateNierian(accountId, nierianName).ToNierianIdV1(); }
+
+      public IEnumerable<NierianEntry> EnumerateNieriansByAccount(ulong accountKey)
+      {
+         var key = BuildKey(accountKey);
+         HashSet<NierianEntry> result = null;
+         if (nieriansByAccountKey.TryGetValue(key, out result))
+            return result;
+         return Enumerable.Empty<NierianEntry>();
+      }
+
+      public void SetNierianName(NierianEntry nierianEntryId, string name)
       {
          //nieriansByNierianId.GetValueOrDefault()
       }
 
-      private string BuildKey(AccountKey accountKey) { return accountKey.ShardId + "/" + accountKey.AccountId; }
+      private string BuildKey(ulong accountId) { return shardId + "/" + accountId; }
    }
 }

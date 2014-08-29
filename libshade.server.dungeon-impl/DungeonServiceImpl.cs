@@ -1,15 +1,15 @@
 ﻿using System;
-using libshade.server;
+using Shade.Server.Level;
 
 namespace Shade.Server.Dungeon
 {
     public class DungeonServiceImpl : DungeonService
     {
-       private readonly LevelService levelService;
+       private readonly LevelInstance levelInstance;
 
-       public DungeonServiceImpl(ShadeServiceLocator shadeServiceLocator, LevelService levelService)
+       public DungeonServiceImpl(ShadeServiceLocator shadeServiceLocator, LevelInstance levelInstance)
        {
-          this.levelService = levelService;
+          this.levelInstance = levelInstance;
 
           shadeServiceLocator.RegisterService(typeof(DungeonService), this);
        }
