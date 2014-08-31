@@ -33,11 +33,7 @@ namespace Shade.Server.Nierians
 
       public IEnumerable<NierianEntry> EnumerateNieriansByAccount(ulong accountKey)
       {
-         var key = BuildKey(accountKey);
-         HashSet<NierianEntry> result = null;
-         if (nieriansByAccountKey.TryGetValue(key, out result))
-            return result;
-         return Enumerable.Empty<NierianEntry>();
+         return shardNierianCache.EnumerateNieriansByAccount(accountKey);
       }
 
       public void SetNierianName(NierianEntry nierianEntryId, string name)

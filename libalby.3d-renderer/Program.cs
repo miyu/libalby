@@ -42,10 +42,12 @@ namespace Shade.Client
       private readonly ClientLevelService clientLevelService;
       private readonly GameControllerService gameControllerService;
 
+      private const string SHARD_ID = "LOCAL";
+
       public Client()
       {
          // Server-side stuff - Don't attach to client-side logic!
-         var shardConfiguration = new ShardConfiguration("LOCAL");
+         var shardConfiguration = new ShardConfiguration(SHARD_ID);
          var platformConfiguration = new PlatformConfiguration(new[] { shardConfiguration });
          shadeServiceLocator = new ShadeServiceLocatorImpl(platformConfiguration);
          accountService = shadeServiceLocator.AccountService;
@@ -62,9 +64,12 @@ namespace Shade.Client
       protected override void HandleGameInitialize()
       {
          // initialize server stuff
-         var accountKey = accountService.CreateAccount("LOCAL", "ItzWarty");
-         var nierianKey = nierianService.CreateNierian(accountKey, "Warty");
-         var nierians = nierianService.EnumerateNieriansByAccount(accountKey);
+         var accountKey = accountService.CreateAccount(SHARD_ID, "ItzWarty");
+         var nierianKey = nierianService.CreateNierian(SHARD_ID, accountKey.AccountId, "Warty");
+         var nierians = nierianService.EnumerateNieriansByAccount(SHARD_ID, accountKey.AccountId);
+
+         foreach(var nierian in nierians)
+            Console.WriteLine(nierian);
 
          // initialize client stuff
          base.HandleGameInitialize();

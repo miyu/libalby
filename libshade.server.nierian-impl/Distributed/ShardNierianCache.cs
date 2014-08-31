@@ -14,12 +14,14 @@ namespace Shade.Server.Nierians.Distributed
       private readonly string shardId;
       private readonly ICache<NierianKey, NierianEntry> cache;
       private readonly ICountingCache nierianIdCountingCache;
+      private readonly ICacheIndex<NierianKey, NierianEntry, ulong> cacheAccountIndex;
 
       public ShardNierianCache(string shardId, ICache<NierianKey, NierianEntry> cache, ICountingCache nierianIdCountingCache)
       {
          this.shardId = shardId;
          this.cache = cache;
          this.nierianIdCountingCache = nierianIdCountingCache;
+         this.cacheAccountIndex = cache.GetIndex<ulong>("ACCOUNT");
       }
 
       public NierianKey CreateNierian(ulong accountId, string nierianName)
@@ -31,6 +33,11 @@ namespace Shade.Server.Nierians.Distributed
          } else {
             return null;
          }
+      }
+
+      public IEnumerable<NierianEntry> EnumerateNieriansByAccount(ulong accountId)
+      {
+         return this.cache.FilterEntries(cacheAccountIndex, accountId).Select((e) => e.Value);
       }
 
       public ICache<NierianKey, NierianEntry> Cache { get { return cache; } }

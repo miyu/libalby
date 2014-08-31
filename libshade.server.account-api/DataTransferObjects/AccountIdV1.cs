@@ -1,4 +1,5 @@
-﻿using Dargon.PortableObjects;
+﻿using System;
+using Dargon.PortableObjects;
 
 namespace Shade.Server.Accounts.DataTransferObjects
 {
@@ -14,6 +15,9 @@ namespace Shade.Server.Accounts.DataTransferObjects
          this.shardId = shardId;
          this.accountId = accountId;
       }
+
+      public string ShardId { get { return shardId; } }
+      public ulong AccountId { get { return accountId; } }
 
       public void Serialize(IPofWriter writer)
       {
