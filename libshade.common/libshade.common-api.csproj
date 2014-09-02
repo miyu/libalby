@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Shade</RootNamespace>
-    <AssemblyName>libshade.common</AssemblyName>
+    <AssemblyName>libshade.common-api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libhelios\libhelios.csproj">
-      <Project>{1AE44BCA-78B1-4B19-BDAD-752EFE931B5A}</Project>
-      <Name>libhelios</Name>
+    <ProjectReference Include="..\..\libshade.common\libshade.common.csproj">
+      <Project>{B2A0957D-40A4-4908-A597-AD6000B045FD}</Project>
+      <Name>libshade.common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

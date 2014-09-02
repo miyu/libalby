@@ -43,6 +43,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
+      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
+      <Name>ItzWarty</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libshade.server.level-api\libshade.server.level-api.csproj">
       <Project>{97A0E167-B500-440D-80F0-4BB751914F74}</Project>
       <Name>libshade.server.level-api</Name>
@@ -50,6 +54,10 @@
     <ProjectReference Include="..\libshade.server.level-host-api\libshade.server.lhs-api.csproj">
       <Project>{61BA21A8-F6DB-447E-B7D9-A43CC4B41453}</Project>
       <Name>libshade.server.lhs-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.level-impl\libshade.server.level-impl.csproj">
+      <Project>{3A46CC05-B1A1-46F6-890C-AC972E2D0FBA}</Project>
+      <Name>libshade.server.level-impl</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

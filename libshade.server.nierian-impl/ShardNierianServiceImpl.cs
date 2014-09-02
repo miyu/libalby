@@ -31,15 +31,12 @@ namespace Shade.Server.Nierians
 
       public NierianIdV1 CreateNierian(ulong accountId, string nierianName) { return shardNierianCache.CreateNierian(accountId, nierianName).ToNierianIdV1(); }
 
-      public IEnumerable<NierianEntry> EnumerateNieriansByAccount(ulong accountKey)
+      public IEnumerable<NierianIdV1> EnumerateNieriansByAccount(ulong accountKey)
       {
-         return shardNierianCache.EnumerateNieriansByAccount(accountKey);
+         return shardNierianCache.EnumerateNieriansByAccount(accountKey).Select(n => n.Key.ToNierianIdV1());
       }
 
-      public void SetNierianName(NierianEntry nierianEntryId, string name)
-      {
-         //nieriansByNierianId.GetValueOrDefault()
-      }
+      public void SetNierianName(ulong accountId, ulong nierianId, string name) { shardNierianCache.SetNierianName(accountId, nierianId, name); }
 
       private string BuildKey(ulong accountId) { return shardId + "/" + accountId; }
    }

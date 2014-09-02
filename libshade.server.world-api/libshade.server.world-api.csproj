@@ -39,11 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShardWorldService.cs" />
+    <Compile Include="WorldLocationV1.cs" />
     <Compile Include="WorldLoginResult.cs" />
     <Compile Include="WorldService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libdpo\libdpo.csproj">
+      <Project>{DA87B9E0-3584-4448-97B5-9877CAC44352}</Project>
+      <Name>libdpo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libshade.server.level-api\libshade.server.level-api.csproj">
       <Project>{97A0E167-B500-440D-80F0-4BB751914F74}</Project>
       <Name>libshade.server.level-api</Name>

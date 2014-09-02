@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Shade.Alby;
 using SharpDX;
 using SharpDX.Toolkit;
@@ -82,13 +83,13 @@ namespace Shade.Helios
          base.Draw(gameTime);
 
          // set the parameters for cube drawing and draw it using the basic effect
-         //_basicEffect.Texture = _cubeTexture;
-         //_basicEffect.World = _cubeTransform;
-         //_cube.Draw(_basicEffect);
+         _basicEffect.Texture = _cubeTexture;
+         _basicEffect.World = _cubeTransform;
+         _cube.Draw(_basicEffect);
 
-         //_basicEffect.Texture = _planeTexture;
-         //_basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(2, 0, 2f);
-         //_plane.Draw(_basicEffect);  
+         _basicEffect.Texture = _planeTexture;
+         _basicEffect.World = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(2, 0, 2f);
+         _plane.Draw(_basicEffect);  
       }
 
       /// <summary>
@@ -134,7 +135,7 @@ namespace Shade.Helios
          _plane = ToDisposeContent(GeometricPrimitive.Plane.New(GraphicsDevice, 1f, 1f));
 
          // load the texture using game's content manager
-         //_planeTexture = Content.Load<Texture2D>("GeneticaMortarlessBlocks.jpg");
+         _planeTexture = Content.Load<Texture2D>("GeneticaMortarlessBlocks.jpg");
 
          // rotate the plane horizontally and move it down a bit
          _planeTransform = Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(0f, 0f, 0f);

@@ -1,22 +1,22 @@
-﻿using System;
-using Shade.Server.Level;
+﻿using Shade.Server.LevelHostManager;
 
-namespace Shade.Server.Dungeon
+namespace Shade.Server.Dungeons
 {
     public class DungeonServiceImpl : DungeonService
     {
-       private readonly LevelInstance levelInstance;
+       private readonly DynamicLevelHostManagerService dynamicLevelHostManagerService;
 
-       public DungeonServiceImpl(ShadeServiceLocator shadeServiceLocator, LevelInstance levelInstance)
+       public DungeonServiceImpl(ShadeServiceLocator shadeServiceLocator, DynamicLevelHostManagerService dynamicLevelHostManagerService)
        {
-          this.levelInstance = levelInstance;
-
           shadeServiceLocator.RegisterService(typeof(DungeonService), this);
+
+          this.dynamicLevelHostManagerService = dynamicLevelHostManagerService;
        }
 
        public Dungeon CreateDebugDungeon()
        {
-          throw new NotImplementedException();
+          //dynamicLevelHostManagerService
+          return null;
        }
     }
 }

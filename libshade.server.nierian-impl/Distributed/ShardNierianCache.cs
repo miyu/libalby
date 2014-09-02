@@ -21,7 +21,7 @@ namespace Shade.Server.Nierians.Distributed
          this.shardId = shardId;
          this.cache = cache;
          this.nierianIdCountingCache = nierianIdCountingCache;
-         this.cacheAccountIndex = cache.GetIndex<ulong>("ACCOUNT");
+         this.cacheAccountIndex = cache.GetIndex<ulong>(Caches.NIERIAN_CACHE_ACCOUNT_ID_INDEX_NAME);
       }
 
       public NierianKey CreateNierian(ulong accountId, string nierianName)
@@ -40,9 +40,11 @@ namespace Shade.Server.Nierians.Distributed
          return this.cache.FilterEntries(cacheAccountIndex, accountId).Select((e) => e.Value);
       }
 
+      public void SetNierianName(ulong accountId, ulong nierianId, string name) { this.cache.Invoke(new NierianKey(shardId, accountId, nierianId), new NierianNameChangeProcessor(name)); }
+
       public ICache<NierianKey, NierianEntry> Cache { get { return cache; } }
 
-      public class NierianCreationProcessor : IEntryProcessor<NierianKey, NierianEntry, bool>
+      public class NierianCreationProcessor : IEntryProcessor<NierianKey, NierianEntry, bool>, IPortableObject
       {
          private string nierianName;
 
@@ -65,6 +67,26 @@ namespace Shade.Server.Nierians.Distributed
          public void Serialize(IPofWriter writer) { writer.WriteString(0, nierianName); }
 
          public void Deserialize(IPofReader reader) { nierianName = reader.ReadString(0); }
+      }
+
+      public class NierianNameChangeProcessor : IEntryProcessor<NierianKey, NierianEntry, bool>, IPortableObject
+      {
+         private string name;
+
+         public NierianNameChangeProcessor(string name) { this.name = name; }
+
+         public bool Process(IEntry<NierianKey, NierianEntry> entry) {
+            if (entry.IsPresent) {
+               entry.Value.Name = name;
+               return true;
+            } else {
+               return false;
+            }
+         }
+
+         public void Serialize(IPofWriter writer) { writer.WriteString(0, name); }
+
+         public void Deserialize(IPofReader reader) { name = reader.ReadString(0); }
       }
    }
 }

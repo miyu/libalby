@@ -6,12 +6,12 @@ namespace Shade.Server.World.Distributed
    public class LocationCacheKey : IPortableObject
    {
       private string shardId;
-      private uint accountId;
-      private uint nierianId;
+      private ulong accountId;
+      private ulong nierianId;
 
       public LocationCacheKey() { }
 
-      public LocationCacheKey(string shardId, uint accountId, uint nierianId)
+      public LocationCacheKey(string shardId, ulong accountId, ulong nierianId)
       {
          this.shardId = shardId;
          this.accountId = accountId;
@@ -21,15 +21,15 @@ namespace Shade.Server.World.Distributed
       public void Serialize(IPofWriter writer)
       {
          writer.WriteString(0, shardId);
-         writer.WriteU32(1, accountId);
-         writer.WriteU32(2, nierianId);
+         writer.WriteU64(1, accountId);
+         writer.WriteU64(2, nierianId);
       }
 
       public void Deserialize(IPofReader reader)
       {
          shardId = reader.ReadString(0);
-         accountId = reader.ReadU32(1);
-         nierianId = reader.ReadU32(2);
+         accountId = reader.ReadU64(1);
+         nierianId = reader.ReadU64(2);
       }
    }
 }

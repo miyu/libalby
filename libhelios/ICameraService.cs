@@ -2,7 +2,7 @@
 
 namespace Shade.Helios
 {
-   internal interface ICameraService
+   public interface ICameraService
    {
       Matrix View { get; }
       Matrix Projection { get; }

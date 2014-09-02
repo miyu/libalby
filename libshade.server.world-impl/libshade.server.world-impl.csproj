@@ -45,6 +45,7 @@
     <Compile Include="Distributed\LocationCacheValue.cs" />
     <Compile Include="Distributed\NierianEntry.cs" />
     <Compile Include="Distributed\WorldLocation.cs" />
+    <Compile Include="ShardWorldServiceImpl.cs" />
     <Compile Include="WorldPofContext.cs" />
     <Compile Include="WorldServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\libshade.server-api\libshade.server-api.csproj">
       <Project>{D83B9C88-F248-44D9-97B9-E957BC8E1637}</Project>
       <Name>libshade.server-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.dungeon-api\libshade.server.dungeon-api.csproj">
+      <Project>{92AF0185-EC38-43E2-854F-C72E160CC8CE}</Project>
+      <Name>libshade.server.dungeon-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libshade.server.level-host-manager-api\libshade.server.lhm-api.csproj">
       <Project>{B84594E8-D86F-4B89-96E0-B382ECF7CB4B}</Project>

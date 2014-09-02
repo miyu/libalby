@@ -2,7 +2,9 @@
 {
    public struct AssetHandle
    {
-      private uint value;
+      public readonly static AssetHandle NullHandle = new AssetHandle(0xFFFFFFFFU);
+
+      private readonly uint value;
 
       public AssetHandle(uint value) { this.value = value; }
 
@@ -15,5 +17,7 @@
       }
 
       public override int GetHashCode() { return value.GetHashCode(); }
+
+      public override string ToString() { return "[Asset Handle " + value + "]"; }
    }
 }

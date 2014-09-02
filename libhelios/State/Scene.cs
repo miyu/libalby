@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Shade.Entities;
 using Shade.Helios.Entities;
 
 namespace Shade.Helios.State

@@ -38,6 +38,9 @@
     <Reference Include="SharpDX">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.Toolkit">
       <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11-Signed-net40\SharpDX.Toolkit.dll</HintPath>
     </Reference>
@@ -46,6 +49,9 @@
     </Reference>
     <Reference Include="SharpDX.Toolkit.Graphics">
       <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11-Signed-net40\SharpDX.Toolkit.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit.Input">
+      <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11-Signed-net40\SharpDX.Toolkit.Input.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,16 +66,14 @@
   <ItemGroup>
     <Compile Include="Assets\AssetHandle.cs" />
     <Compile Include="CameraProvider.cs" />
-    <Compile Include="Entities\Component.cs" />
-    <Compile Include="Entities\ComponentType.cs" />
-    <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\EntitySystem.cs" />
-    <Compile Include="Entities\RenderComponent.cs" />
     <Compile Include="EngineGame.cs" />
     <Compile Include="Assets\IAssetService.cs" />
+    <Compile Include="Entities\RenderComponent.cs" />
     <Compile Include="ICameraService.cs" />
     <Compile Include="Assets\AssetService.cs" />
     <Compile Include="IEngineGame.cs" />
+    <Compile Include="IMeshLoaderService.cs" />
+    <Compile Include="Mesh.cs" />
     <Compile Include="SceneManager.cs" />
     <Compile Include="State\IScene.cs" />
     <Compile Include="State\NullScene.cs" />
@@ -82,6 +86,42 @@
     <Compile Include="TextureLoader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\arroway.de_tiles-68_b020.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\arroway.de_tiles-68_d100.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\arroway.de_tiles-68_s100-g100-r100.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate0\crate0_bump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate0\crate0_diffuse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate0\crate0_normal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate1\crate1_bump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate1\crate1_diffuse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate1\crate1_normal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate2\crate2_bump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate2\crate2_diffuse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\crate2\crate2_normal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\GeneticaMortarlessBlocks.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -91,11 +131,18 @@
     <Content Include="Content\logo_large.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\red.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libshade.common\libshade.common.csproj">
+      <Project>{b2a0957d-40a4-4908-a597-ad6000b045fd}</Project>
+      <Name>libshade.common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
       <Name>ItzWarty</Name>

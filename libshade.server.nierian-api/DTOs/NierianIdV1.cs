@@ -39,5 +39,7 @@ namespace Shade.Server.Nierians.DTOs
          accountId = reader.ReadU64(1);
          nierianId = reader.ReadU64(2);
       }
+
+      public override string ToString() { return "[NierianIDV1 { ShardId = " + shardId + ", AccountId = " + accountId + ", NierianId = " + nierianId + " }]"; }
    }
 }

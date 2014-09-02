@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Distributed\AccountIdFromNierianEntryProjector.cs" />
     <Compile Include="Distributed\Caches.cs" />
     <Compile Include="Distributed\NierianEntry.cs" />
     <Compile Include="Distributed\ShardNierianCache.cs" />
     <Compile Include="Distributed\NierianKey.cs" />
+    <Compile Include="NierianPofContext.cs" />
     <Compile Include="NierianServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShardNierianServiceImpl.cs" />

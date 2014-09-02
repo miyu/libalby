@@ -9,6 +9,7 @@ namespace Shade.Server.Nierians.Distributed
       private readonly ICountingCache nierianIdCountingCache;
 
       public const string NIERIAN_CACHE_NAME = "nierian-cache";
+      public const string NIERIAN_CACHE_ACCOUNT_ID_INDEX_NAME = "nierian-cache-account-id-index";
       public const string NIERIAN_ID_COUNTER_CACHE_NAME = "nierian-id-counter-cache";
 
       public Caches(string shardId, PlatformCacheService platformCacheService, SpecializedCacheService specializedCacheService)

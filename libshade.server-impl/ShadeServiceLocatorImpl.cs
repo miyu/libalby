@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using ItzWarty.Services;
 using Shade.Server.Accounts;
 using Shade.Server.Cache;
-using Shade.Server.Dungeon;
+using Shade.Server.Dungeons;
 using Shade.Server.Level;
+using Shade.Server.LevelHostManager;
 using Shade.Server.Nierians;
 using Shade.Server.SpecializedCache;
 using Shade.Server.World;
@@ -19,8 +20,10 @@ namespace Shade.Server
       private readonly SpecializedCacheService specializedCacheService;
       private readonly AccountService accountService;
       private readonly NierianService nierianService;
+
+      private readonly SimpleLevelHostManagerServiceImpl levelHostManagerService;
+
       private readonly List<WorldService> worldServices = new List<WorldService>();
-      private readonly LevelInstance levelInstance;
       private readonly DungeonService dungeonService;
 
       public ShadeServiceLocatorImpl(PlatformConfiguration configuration)
@@ -31,22 +34,29 @@ namespace Shade.Server
          specializedCacheService = new SpecializedCacheServiceImpl(this, configuration, platformCacheService);
 
          accountService = new AccountServiceImpl(this, configuration, platformCacheService, specializedCacheService);
-         nierianService = new NierianServiceImpl(this, configuration);
+         nierianService = new NierianServiceImpl(this, configuration, platformCacheService, specializedCacheService);
 
-         levelInstance = new LevelInstanceImpl(this);
-         dungeonService = new DungeonServiceImpl(this, levelInstance);
-         worldServices.Add(new WorldServiceImpl(this, configuration));
+         levelHostManagerService = new SimpleLevelHostManagerServiceImpl();
+
+         dungeonService = new DungeonServiceImpl(this, levelHostManagerService);
+         
+         worldServices.Add(new WorldServiceImpl(this, configuration, platformCacheService, nierianService, dungeonService));
       }
 
       public PlatformConfiguration Configuration { get; private set; }
-
+      
       public PlatformCacheService PlatformCacheService { get { return platformCacheService; } }
+      public SpecializedCacheService SpecializedCacheService { get { return specializedCacheService; } }
 
       public AccountService AccountService { get { return accountService; } }
       public NierianService NierianService { get { return nierianService; } }
-      public IReadOnlyCollection<WorldService> WorldServices { get { return worldServices; } }
-      public LevelInstance LevelInstance { get { return levelInstance; } }
+
+      public DynamicLevelHostManagerService DynamicLevelHostManagerService { get { return levelHostManagerService; } }
+      public WorldLevelHostManagerService WorldLevelHostManagerService { get { return levelHostManagerService; } }
+
       public DungeonService DungeonService { get { return dungeonService; } }
+
+      public IReadOnlyCollection<WorldService> WorldServices { get { return worldServices; } }
 
       public void RegisterService(Type type, object provider)
       {

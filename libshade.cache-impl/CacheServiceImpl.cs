@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dargon.Distributed;
 using Dargon.PortableObjects;
 using ItzWarty;
 using Shade.Server.Accounts;
 using Shade.Server.Accounts.Distributed;
+using Shade.Server.Nierians;
+using Shade.Server.Nierians.Distributed;
 using Shade.Server.SpecializedCache;
 using Shade.Server.World;
 using Shade.Server.World.Distributed;
@@ -28,7 +31,8 @@ namespace Shade.Server.Cache
 
           InitializeSpecializedCaches();  // 0 - 999, 1000 - 9999 remaining
           InitializeWorldCaches();        // 10000 - 19999
-          InitializeAccountCaches();      // 20000 - 29999 
+          InitializeAccountCaches();      // 20000 - 29999
+          InitializeNierianCaches();      // 30000 - 39999
        }
 
        private void InitializeSpecializedCaches()
@@ -58,9 +62,29 @@ namespace Shade.Server.Cache
           }
        }
 
-       private void RegisterPersistentNamedCache<TKey, TValue>(string name)
+       private void InitializeNierianCaches()
        {
-          cachesByName.Add(name, cacheFactory.CreatePersistentCache<TKey, TValue>(name));
+          globalPofContext.MergeContext(new NierianPofContext());
+          
+          foreach (var shardId in shardIds) {
+             RegisterPersistentNamedCache<NierianKey, NierianEntry>(
+                BuildCacheName(shardId, Nierians.Distributed.Caches.NIERIAN_CACHE_NAME),
+                new List<ICacheIndex> {
+                   ConstructPersistentNamedCacheIndex(Nierians.Distributed.Caches.NIERIAN_CACHE_ACCOUNT_ID_INDEX_NAME, new AccountIdFromNierianEntryProjector())
+                }
+             );
+          }
+       }
+
+       private void RegisterPersistentNamedCache<TKey, TValue>(string name, IReadOnlyList<ICacheIndex> indices = null)
+       {
+          Console.WriteLine("Register Persistent Cache " + name);
+          cachesByName.Add(name, cacheFactory.CreatePersistentCache<TKey, TValue>(name, indices));
+       }
+
+       private ICacheIndex<TKey, TValue, TProjection> ConstructPersistentNamedCacheIndex<TKey, TValue, TProjection>(string name, ICacheProjector<TKey, TValue, TProjection> projector)
+       {
+          return cacheFactory.CreatePersistentCacheIndex(name, projector);
        }
 
        public IPofContext GlobalPofContext { get { return globalPofContext; } }

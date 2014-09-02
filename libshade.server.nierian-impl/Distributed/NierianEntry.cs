@@ -1,12 +1,10 @@
 ﻿using Dargon.PortableObjects;
-using Shade.Server.Accounts;
-using Shade.Server.Nierians.Distributed;
 
-namespace Shade.Server.Nierians
+namespace Shade.Server.Nierians.Distributed
 {
    public class NierianEntry : IPortableObject
    {
-      private readonly NierianKey nierianKey;
+      private NierianKey nierianKey;
       private string name;
 
       public NierianEntry(NierianKey niarianKey, string nierianName)
@@ -16,10 +14,18 @@ namespace Shade.Server.Nierians
       }
 
       public NierianKey Key { get { return nierianKey; } }
-      public string Name { get { return name; } }
+      public string Name { get { return name; } set { name = value; } }
 
-      public void Serialize(IPofWriter writer) { throw new System.NotImplementedException(); }
+      public void Serialize(IPofWriter writer)
+      {
+         writer.WriteObject(0, nierianKey);
+         writer.WriteString(1, name);
+      }
 
-      public void Deserialize(IPofReader reader) { throw new System.NotImplementedException(); }
+      public void Deserialize(IPofReader reader)
+      {
+         nierianKey = reader.ReadObject<NierianKey>(0);
+         name = reader.ReadString(1);
+      }
    }
 }

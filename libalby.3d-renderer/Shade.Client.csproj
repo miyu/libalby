@@ -101,6 +101,10 @@
       <Project>{DA87B9E0-3584-4448-97B5-9877CAC44352}</Project>
       <Name>libdpo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\libshade.common\libshade.common.csproj">
+      <Project>{B2A0957D-40A4-4908-A597-AD6000B045FD}</Project>
+      <Name>libshade.common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>

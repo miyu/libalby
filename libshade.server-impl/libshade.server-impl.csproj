@@ -84,6 +84,10 @@
       <Project>{97A0E167-B500-440D-80F0-4BB751914F74}</Project>
       <Name>libshade.server.level-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libshade.server.level-host-manager-api\libshade.server.lhm-api.csproj">
+      <Project>{B84594E8-D86F-4B89-96E0-B382ECF7CB4B}</Project>
+      <Name>libshade.server.lhm-api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libshade.server.level-impl\libshade.server.level-impl.csproj">
       <Project>{3A46CC05-B1A1-46F6-890C-AC972E2D0FBA}</Project>
       <Name>libshade.server.level-impl</Name>
@@ -95,6 +99,10 @@
     <ProjectReference Include="..\libshade.server.nierian-impl\libshade.server.nierian-impl.csproj">
       <Project>{67C5E9D2-3113-405B-BD11-37E3008FBC66}</Project>
       <Name>libshade.server.nierian-impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libshade.server.sector-manager-impl\libshade.server.lhm-impl.csproj">
+      <Project>{BFFF47CC-9FE5-47F6-B8E4-3771338694F2}</Project>
+      <Name>libshade.server.lhm-impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libshade.server.world-api\libshade.server.world-api.csproj">
       <Project>{5F63E7B9-69FB-4A83-871A-D5018C164333}</Project>

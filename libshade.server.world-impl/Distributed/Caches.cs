@@ -11,13 +11,17 @@ namespace Shade.Server.World.Distributed
    {
       public const string WORLD_LOCATION_CACHE_NAME = "world-location-cache";
 
+      private readonly string shardId;
       private readonly PlatformCacheService cacheService;
+      private readonly ICache<LocationCacheKey, LocationCacheValue> worldLocationCache;
 
-      public Caches(PlatformCacheService cacheService)
+      public Caches(string shardId, PlatformCacheService cacheService)
       {
-         this.cacheService = cacheService; 
+         this.shardId = shardId;
+         this.cacheService = cacheService;
+         this.worldLocationCache = cacheService.GetKeyValueCache<LocationCacheKey, LocationCacheValue>(shardId, WORLD_LOCATION_CACHE_NAME);
       }
 
-      public ICache<LocationCacheKey, LocationCacheValue> WorldLocationCache { get { return cacheService.GetKeyValueCache<LocationCacheKey, LocationCacheValue>(WORLD_LOCATION_CACHE_NAME); } }
+      public ICache<LocationCacheKey, LocationCacheValue> WorldLocationCache { get { return worldLocationCache; } }
    }
 }

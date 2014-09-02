@@ -1,9 +1,7 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace Shade.Server.Dungeon
+﻿namespace Shade.Server.Dungeons
 {
    public interface DungeonService
    {
-      Dungeon CreateDebugDungeon();
+      Dungeons.Dungeon CreateDebugDungeon();
    }
 }

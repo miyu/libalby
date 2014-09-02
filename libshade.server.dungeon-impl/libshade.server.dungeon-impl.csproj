@@ -41,9 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DungeonServiceImpl.cs" />
+    <Compile Include="FloorEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libshade.common\libshade.common.csproj">
+      <Project>{B2A0957D-40A4-4908-A597-AD6000B045FD}</Project>
+      <Name>libshade.common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
@@ -60,6 +65,13 @@
       <Project>{97A0E167-B500-440D-80F0-4BB751914F74}</Project>
       <Name>libshade.server.level-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libshade.server.level-host-manager-api\libshade.server.lhm-api.csproj">
+      <Project>{B84594E8-D86F-4B89-96E0-B382ECF7CB4B}</Project>
+      <Name>libshade.server.lhm-api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

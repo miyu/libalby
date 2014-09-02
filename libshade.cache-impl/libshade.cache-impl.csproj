@@ -68,6 +68,10 @@
       <Project>{20BA25B4-6DF7-4167-ACAA-8C45EF41603C}</Project>
       <Name>libshade.server.account-impl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libshade.server.nierian-impl\libshade.server.nierian-impl.csproj">
+      <Project>{67c5e9d2-3113-405b-bd11-37e3008fbc66}</Project>
+      <Name>libshade.server.nierian-impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libshade.server.world-impl\libshade.server.world-impl.csproj">
       <Project>{DE31DC1A-BB59-43F9-B944-4F80148E0ED3}</Project>
       <Name>libshade.server.world-impl</Name>

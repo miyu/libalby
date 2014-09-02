@@ -10,9 +10,9 @@ namespace Shade.Server.World.Distributed
 
       public LocationCache(ICache<LocationCacheKey, LocationCacheValue> cache) { this.cache = cache; }
 
-      public WorldLocation Peek(LocationCacheKey key)
+      public WorldLocation Peek(string shardId, ulong accountId, ulong nierianId)
       {
-         var value = this.cache.GetValueOrDefault(key);
+         var value = this.cache.GetValueOrDefault(new LocationCacheKey(shardId, accountId, nierianId));
          if (value == null)
             return null;
          return value.Peek();

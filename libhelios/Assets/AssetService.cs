@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ItzWarty;
 using SharpDX.Toolkit;
@@ -8,7 +9,7 @@ namespace Shade.Helios.Assets
 {
    public sealed class AssetService : GameSystem, IAssetService
    {
-      private Dictionary<AssetHandle, object> assetsByHandle = new Dictionary<AssetHandle, object>(); 
+      private readonly Dictionary<AssetHandle, object> assetsByHandle = new Dictionary<AssetHandle, object>(); 
       private uint assetHandleCounter = 0;
 
       public AssetService(Game game)
@@ -21,6 +22,7 @@ namespace Shade.Helios.Assets
       {
          var handle = GetNextAssetHandle();
          assetsByHandle.Add(handle, asset);
+         Console.WriteLine("HANDLE " + handle + " is " + asset);
          return handle;
       }
 

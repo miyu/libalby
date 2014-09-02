@@ -23,11 +23,11 @@ namespace Shade.Helios
       {
          base.Update(gameTime);
 
-         var viewRotationAngle = 0;//(float)(gameTime.TotalGameTime.TotalSeconds * 0.2f);
-         var eyePosition = Vector3.Transform(new Vector3(0, 30, 5f), Quaternion.RotationAxis(Vector3.UnitY, viewRotationAngle));
+         var viewRotationAngle = 0; // MathUtil.DegreesToRadians(-10.0f); //(float)(gameTime.TotalGameTime.TotalSeconds * 0.2f);
+         var eyePosition = Vector3.Transform(new Vector3(0, 10f, 4f), Quaternion.RotationAxis(Vector3.UnitY, viewRotationAngle));
 
          _view = Matrix.LookAtRH(eyePosition, new Vector3(0, 0, 0), Vector3.UnitY);
-         _projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour, (float)GraphicsDevice.BackBuffer.Width / GraphicsDevice.BackBuffer.Height, 0.1f, 200.0f);
+         _projection = Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(60.0f), (float)GraphicsDevice.BackBuffer.Width / GraphicsDevice.BackBuffer.Height, 0.1f, 200.0f);
       }
    }
 }

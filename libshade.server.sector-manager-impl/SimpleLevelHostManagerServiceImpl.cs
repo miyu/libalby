@@ -8,8 +8,14 @@ namespace Shade.Server.LevelHostManager
     {
        private readonly LevelHostService levelHostService;
 
-       public SimpleLevelHostManagerServiceImpl() { levelHostService = new LevelHostServiceImpl(); }
+       public SimpleLevelHostManagerServiceImpl()
+       {
+          levelHostService = new LevelHostServiceImpl();
+       }
 
-       public LevelHostService LookupLevelHostService(ulong levelId) { return levelHostService; }
+       public LevelHostService LookupLevelHostService(ulong levelId)
+       {
+          return levelHostService;
+       }
     }
 }

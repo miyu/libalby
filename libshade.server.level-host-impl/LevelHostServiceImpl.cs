@@ -1,13 +1,15 @@
-﻿using Shade.Server.Level;
+﻿using ItzWarty;
+using Shade.Server.Level;
+using System.Collections.Generic;
 
 namespace Shade.Server.World.LevelHost
 {
     public class LevelHostServiceImpl : LevelHostService
     {
-       public LevelHostServiceImpl()
-       {
-       }
+       private readonly Dictionary<ulong, LevelInstance> levelInstancesByLevelId = new Dictionary<ulong, LevelInstance>();
 
-       public LevelInstance GetLevel(ulong id) { throw new System.NotImplementedException(); }
+       public LevelHostServiceImpl() { }
+
+       public LevelInstance GetLevel(ulong id) { return levelInstancesByLevelId.GetValueOrDefault(id); }
     }
 }

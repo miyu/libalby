@@ -2,9 +2,9 @@
 
 namespace Shade.Server.World
 {
-    public interface WorldService
-    {
-       WorldLoginResult Enter(NierianKey nierianKey);
-       void Leave(NierianKey key);
-    }
+   public interface WorldService
+   {
+      WorldLoginResult Enter(string shardId, ulong accountId, ulong nierianId);
+      void Leave(string shardId, ulong accountId, ulong nierianId);
+   }
 }

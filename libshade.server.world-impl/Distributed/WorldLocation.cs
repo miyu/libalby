@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.PortableObjects;
+﻿using Dargon.PortableObjects;
 
-namespace Shade.Server.World.Distributed
+namespace Shade.Server.World
 {
    public class WorldLocation : IPortableObject
    {
@@ -24,6 +19,11 @@ namespace Shade.Server.World.Distributed
          this.z = z;
       }
 
+      public uint LevelId { get { return levelId; } }
+      public float X { get { return x; } }
+      public float Y { get { return y; } }
+      public float Z { get { return z; } }
+
       public void Serialize(IPofWriter writer)
       {
          writer.WriteU32(0, levelId);
@@ -39,5 +39,7 @@ namespace Shade.Server.World.Distributed
          y = reader.ReadFloat(2);
          z = reader.ReadFloat(3);
       }
+
+      public WorldLocationV1 ToWorldLocationV1() { return new WorldLocationV1(levelId, x, y, z); }
    }
 }
