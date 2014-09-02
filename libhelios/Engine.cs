@@ -27,6 +27,7 @@ namespace Shade.Helios
 
       public IGraphicsDeviceManager GraphicsDeviceManager { get { return game.GraphicsDeviceManager; } }
       public KeyboardState Keyboard { get { return game.KeyboardState; } }
+      public MouseSubsystem Mouse { get { return game.MouseSubsystem; } }
       public ICameraService CameraService { get { return game.CameraService; } }
       public IAssetService AssetService { get { return game.AssetService; } }
       public ITextureLoaderService TextureLoader { get { return game.TextureLoader; } }

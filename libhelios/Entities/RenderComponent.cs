@@ -9,7 +9,7 @@ namespace Shade.Helios.Entities
    {
       private readonly AssetHandle diffuseTexture;
       private readonly AssetHandle mesh;
-      private readonly Matrix worldTransform;
+      private Matrix worldTransform;
 
       public RenderComponent(AssetHandle diffuseTexture, AssetHandle mesh, Matrix? modelTransform = null)
          : base(ComponentType.Renderable)
@@ -21,6 +21,6 @@ namespace Shade.Helios.Entities
 
       public AssetHandle DiffuseTexture { get { return diffuseTexture; } }
       public AssetHandle Mesh { get { return mesh; } }
-      public Matrix WorldTransform { get { return worldTransform; } }
+      public Matrix WorldTransform { get { return worldTransform; } set { worldTransform = value; } }
    }
 }

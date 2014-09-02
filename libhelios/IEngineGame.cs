@@ -19,6 +19,7 @@ namespace Shade.Helios
       GameServiceRegistry Services { get; }
       IGraphicsDeviceManager GraphicsDeviceManager { get; }
       KeyboardState KeyboardState { get; }
+      MouseSubsystem MouseSubsystem { get; }
       ICameraService CameraService { get; }
       IAssetService AssetService { get; }
       ITextureLoaderService TextureLoader { get; }

@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
+using ItzWarty.Geometry;
 using NLog;
 using Shade.Entities;
 using Shade.Helios;
 using Shade.Helios.Entities;
+using Shade.Helios.Pathfinding;
 using Shade.Helios.State;
 using Shade.Server;
 using Shade.Server.Accounts;
@@ -49,6 +51,8 @@ namespace Shade.Client
 
       private const string SHARD_ID = "LOCAL";
 
+      private Entity heroEntity;
+
       public Client()
       {
          // Server-side stuff - Don't attach to client-side logic!
@@ -90,11 +94,11 @@ namespace Shade.Client
          var crateMesh = MeshLoader.TransformMesh(floorBlockMesh, Matrix.Scaling(0.9f, 0.65f, 0.65f));
 
          var scene = new Scene();
-         var heroEntity = new Entity();
+         heroEntity = new Entity();
          heroEntity.AddComponent(new RenderComponent(heroTexture, heroMesh, Matrix.RotationY(10f * (float)Math.PI / 180f)));
          scene.AddEntity(heroEntity);
 
-         const int enemyCount = 5;
+         const int enemyCount = 3;
          for (var i = 0; i < enemyCount; i++) {
             var enemyEntity = new Entity();
             enemyEntity.AddComponent(new RenderComponent(enemyTexture, enemyMesh, Matrix.Translation(0, 0, 4.0f) * Matrix.RotationY(MathUtil.DegreesToRadians(20.0f + (360.0f * i) / enemyCount))));
@@ -119,7 +123,22 @@ namespace Shade.Client
       protected override void HandleGameUpdate(GameTime gameTime)
       {
          base.HandleGameUpdate(gameTime);
+
+         var navmesh = new NavMesh();
+         var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
+         
+         //Console.WriteLine(Mouse.X + " " + Mouse.Y);
+         var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, CameraService.View * CameraService.Projection);
+         var projection = plane.ProjectRayToSurface(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
+         Console.WriteLine(projection);
+//         projection = plane.PlanarToWorld(new Point2D(1, 0));
+
+         var r = (RenderComponent)heroEntity.GetComponentOrNull(ComponentType.Renderable);
+//         r.WorldTransform = Matrix.Translation(ray.Position + ray.Direction * 10);
+         r.WorldTransform = Matrix.Translation((float)projection.X, (float)projection.Y, (float)projection.Z);
+         Console.WriteLine(ray.Position + " " + ray.Direction);
          if (Keyboard.IsKeyDown(Keys.Left)) {
+            //SceneManager.ActiveScene.EnumerateEntities().First();
             //CameraService.NudgeLeft(0);
          }
       }

@@ -13,6 +13,7 @@ namespace Shade.Helios
       private readonly Engine engine;
       private readonly GraphicsDeviceManager graphicsDeviceManager;
       private readonly KeyboardManager keyboardManager;
+      private readonly MouseSubsystem mouseSubsystem;
       private readonly SceneRenderer sceneRenderer;
       private readonly CameraProvider cameraProvider;
       private readonly AssetService assetService;
@@ -20,7 +21,7 @@ namespace Shade.Helios
       private readonly MeshLoaderService meshLoader;
 
       private KeyboardState keyboardState;
-
+      
       public EngineGame(Engine engine, string contentPath = "Content")
       {
          this.engine = engine;
@@ -29,6 +30,7 @@ namespace Shade.Helios
          this.graphicsDeviceManager.PreferredBackBufferWidth = 1600;
          this.graphicsDeviceManager.PreferredBackBufferHeight = 900;
          this.keyboardManager = new KeyboardManager(this);
+         this.mouseSubsystem = new MouseSubsystem(this, graphicsDeviceManager);
          this.sceneRenderer = new SceneRenderer(this);
          this.cameraProvider = new CameraProvider(this);
          this.assetService = new AssetService(this);
@@ -40,6 +42,7 @@ namespace Shade.Helios
 
       public IGraphicsDeviceManager GraphicsDeviceManager { get { return graphicsDeviceManager; } }
       public KeyboardState KeyboardState { get { return keyboardState; } }
+      public MouseSubsystem MouseSubsystem { get { return mouseSubsystem; } }
       public ICameraService CameraService { get { return cameraProvider; } }
       public IAssetService AssetService { get { return assetService; } }
       public ITextureLoaderService TextureLoader { get { return textureLoader; } }
