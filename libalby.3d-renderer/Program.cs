@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
@@ -97,13 +98,17 @@ namespace Shade.Client
          heroEntity = new Entity();
          heroEntity.AddComponent(new IdentifierComponent("Hero"));
          heroEntity.AddComponent(new ModelComponent(heroTexture, heroMesh));
-         heroEntity.AddComponent(new TransformComponent(Matrix.RotationY(10f * (float)Math.PI / 180f)));
+         heroEntity.AddComponent(new PositionComponent(new Vector3(0, 0, 0)));
+         heroEntity.AddComponent(new ScaleComponent(new Vector3(1, 1, 1)));
+         heroEntity.AddComponent(new OrientationComponent(Quaternion.RotationAxis(new Vector3(0, 1, 0), MathUtil.DegreesToRadians(10.0f))));
+         //heroEntity.AddComponent(new TransformComponent(Matrix.RotationY(10f * (float)Math.PI / 180f)));
          var hbb = AssetService.GetAsset<Mesh>(heroMesh).BoundingBox;
          hbb.Transform(Matrix.Scaling(1.1f));
          heroEntity.AddComponent(new PickableComponent(hbb));
          scene.AddEntity(heroEntity);
 
          const int enemyCount = 3;
+         var enemyEntities = new List<Entity>();
          for (var i = 0; i < enemyCount; i++) {
             var enemyEntity = new Entity();
             enemyEntity.AddComponent(new IdentifierComponent("Enemy " + i));
@@ -113,9 +118,12 @@ namespace Shade.Client
             ebb.Transform(Matrix.Scaling(1.2f));
             enemyEntity.AddComponent(new PickableComponent(ebb));
             scene.AddEntity(enemyEntity);
+            enemyEntities.Add(enemyEntity);
          }
 
+
          var floorEntity = new Entity();
+         floorEntity.AddComponent(new IdentifierComponent("Floor"));
          floorEntity.AddComponent(new ModelComponent(floorTexture, floorMesh));
          floorEntity.AddComponent(new TransformComponent());
          scene.AddEntity(floorEntity);
@@ -146,13 +154,13 @@ namespace Shade.Client
          var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, CameraService.View * CameraService.Projection);
          var projection = plane.Raycast(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
          if (Mouse.Left.Down && projection != null) {
-            var r = (TransformComponent)heroEntity.GetComponentOrNull(ComponentType.Transform);
-            r.WorldTransform = Matrix.Translation((float)projection.X, (float)projection.Y, (float)projection.Z);
+            var r = (IPositionComponent)heroEntity.GetComponentOrNull(ComponentType.Position);
+            r.Position = new Vector3((float)projection.X, (float)projection.Y, (float)projection.Z);
          }
 
          foreach (var entity in SceneManager.ActiveScene.EnumerateEntities()) {
             var identifier = (IdentifierComponent)entity.GetComponentOrNull(ComponentType.Identifier);
-            var transform = (TransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
+            var transform = (ITransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
             var pickable = (PickableComponent)entity.GetComponentOrNull(ComponentType.Pickable);
             if (identifier != null && transform != null && pickable != null) {
                var worldBox = pickable.BoundingBox;

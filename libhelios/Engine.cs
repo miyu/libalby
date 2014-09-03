@@ -80,7 +80,7 @@ namespace Shade.Helios
 
             foreach (var entity in scene.EnumerateEntities()) {
                var model = (ModelComponent)entity.GetComponentOrNull(ComponentType.Model);
-               var transform = (TransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
+               var transform = (ITransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
                var diffuseTexture = AssetService.GetAsset<Texture2D>(model.DiffuseTexture);
                var mesh = AssetService.GetAsset<Mesh>(model.Mesh);
 

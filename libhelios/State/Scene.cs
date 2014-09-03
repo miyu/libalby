@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using Shade.Entities;
 using Shade.Helios.Entities;
+using Shade.Helios.Entities.Systems;
 
 namespace Shade.Helios.State
 {
-   public class Scene : IScene
+   public class Scene : EntityHost, IScene
    {
-      private readonly HashSet<Entity> entities = new HashSet<Entity>();
-
-      public void AddEntity(Entity entity) { this.entities.Add(entity); }
-
-      public IEnumerable<Entity> EnumerateEntities() { return entities; }
+      public Scene()
+      {
+         AddSystem(new PositionOrientationScaleToTransformSystem());
+      }
    }
 }

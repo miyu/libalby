@@ -9,7 +9,7 @@ using Component = Shade.Entities.Component;
 
 namespace Shade.Helios.Entities
 {
-   public class TransformComponent : Component
+   public class TransformComponent : Component, ITransformComponent
    {
       private Matrix worldTransform;
 
@@ -19,5 +19,10 @@ namespace Shade.Helios.Entities
          this.worldTransform = worldTransform ?? Matrix.Identity;
       }
       public Matrix WorldTransform { get { return worldTransform; } set { worldTransform = value; } }
+   }
+
+   public interface ITransformComponent
+   {
+      Matrix WorldTransform { get; set; }
    }
 }
