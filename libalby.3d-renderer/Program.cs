@@ -82,8 +82,8 @@ namespace Shade.Client
          // initialize client stuff
          base.HandleGameInitialize();
          var blockTexture = TextureLoader.LoadTexture("logo_large.png");
-         var heroTexture = TextureLoader.LoadTexture("lime.jpg");
-         var enemyTexture = TextureLoader.LoadTexture("red.jpg");
+         var heroTexture = TextureLoader.LimeTextureHandle;
+         var enemyTexture = TextureLoader.RedTextureHandle;
          var floorTexture = TextureLoader.LoadTexture("arroway.de_tiles-68_s100-g100-r100.jpg");
          var crateTexture = TextureLoader.LoadTexture("crate0/crate0_diffuse.png");
 
@@ -95,22 +95,38 @@ namespace Shade.Client
 
          var scene = new Scene();
          heroEntity = new Entity();
-         heroEntity.AddComponent(new RenderComponent(heroTexture, heroMesh, Matrix.RotationY(10f * (float)Math.PI / 180f)));
+         heroEntity.AddComponent(new IdentifierComponent("Hero"));
+         heroEntity.AddComponent(new ModelComponent(heroTexture, heroMesh));
+         heroEntity.AddComponent(new TransformComponent(Matrix.RotationY(10f * (float)Math.PI / 180f)));
+         var hbb = AssetService.GetAsset<Mesh>(heroMesh).BoundingBox;
+         hbb.Transform(Matrix.Scaling(1.1f));
+         heroEntity.AddComponent(new PickableComponent(hbb));
          scene.AddEntity(heroEntity);
 
          const int enemyCount = 3;
          for (var i = 0; i < enemyCount; i++) {
             var enemyEntity = new Entity();
-            enemyEntity.AddComponent(new RenderComponent(enemyTexture, enemyMesh, Matrix.Translation(0, 0, 4.0f) * Matrix.RotationY(MathUtil.DegreesToRadians(20.0f + (360.0f * i) / enemyCount))));
+            enemyEntity.AddComponent(new IdentifierComponent("Enemy " + i));
+            enemyEntity.AddComponent(new ModelComponent(enemyTexture, enemyMesh));
+            enemyEntity.AddComponent(new TransformComponent(Matrix.Translation(0, 0, 4.0f) * Matrix.RotationY(MathUtil.DegreesToRadians(20.0f + (360.0f * i) / enemyCount))));
+            var ebb = AssetService.GetAsset<Mesh>(enemyMesh).BoundingBox;
+            ebb.Transform(Matrix.Scaling(1.2f));
+            enemyEntity.AddComponent(new PickableComponent(ebb));
             scene.AddEntity(enemyEntity);
          }
 
          var floorEntity = new Entity();
-         floorEntity.AddComponent(new RenderComponent(floorTexture, floorMesh, Matrix.Translation(0, 0, 0)));
+         floorEntity.AddComponent(new ModelComponent(floorTexture, floorMesh));
+         floorEntity.AddComponent(new TransformComponent());
          scene.AddEntity(floorEntity);
 
          var crateEntity = new Entity();
-         crateEntity.AddComponent(new RenderComponent(crateTexture, crateMesh, Matrix.RotationY(30.0f * (float)Math.PI / 180f) * Matrix.Translation(3, 0, 1.6f)));
+         crateEntity.AddComponent(new IdentifierComponent("Crate"));
+         crateEntity.AddComponent(new ModelComponent(crateTexture, crateMesh));
+         crateEntity.AddComponent(new TransformComponent(Matrix.RotationY(30.0f * (float)Math.PI / 180f) * Matrix.Translation(3, 0, 1.6f)));
+         var cbb = AssetService.GetAsset<Mesh>(crateMesh).BoundingBox;
+         cbb.Transform(Matrix.Scaling(1.2f));
+         crateEntity.AddComponent(new PickableComponent(cbb));
          scene.AddEntity(crateEntity);
 
          SceneManager.AddScene(scene);
@@ -130,8 +146,21 @@ namespace Shade.Client
          var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, CameraService.View * CameraService.Projection);
          var projection = plane.Raycast(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
          if (Mouse.Left.Down && projection != null) {
-            var r = (RenderComponent)heroEntity.GetComponentOrNull(ComponentType.Renderable);
+            var r = (TransformComponent)heroEntity.GetComponentOrNull(ComponentType.Transform);
             r.WorldTransform = Matrix.Translation((float)projection.X, (float)projection.Y, (float)projection.Z);
+         }
+
+         foreach (var entity in SceneManager.ActiveScene.EnumerateEntities()) {
+            var identifier = (IdentifierComponent)entity.GetComponentOrNull(ComponentType.Identifier);
+            var transform = (TransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
+            var pickable = (PickableComponent)entity.GetComponentOrNull(ComponentType.Pickable);
+            if (identifier != null && transform != null && pickable != null) {
+               var worldBox = pickable.BoundingBox;
+               worldBox.Transform(transform.WorldTransform);
+               if (worldBox.Intersects(ref ray)) {
+                  Console.WriteLine(identifier.Name);
+               }
+            }
          }
 
          if (Keyboard.IsKeyDown(Keys.Left)) {

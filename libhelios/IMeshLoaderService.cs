@@ -36,18 +36,22 @@ namespace Shade.Helios
          base.LoadContent();
 
          var cube = ToDisposeContent(GeometricPrimitive.Cube.New(GraphicsDevice));
-         var cubeMesh = new Mesh(cube.IsIndex32Bits, cube.IndexBuffer, cube.VertexBuffer);
+         var cubeBounds = new OrientedBoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+         var cubeMesh = new Mesh(cube.IsIndex32Bits, cube.IndexBuffer, cube.VertexBuffer, cubeBounds);
          this.unitCubeMesh = assetService.AddAsset(cubeMesh);
 
          var plane = ToDisposeContent(GeometricPrimitive.Plane.New(GraphicsDevice, 1f, 1f));
-         var planeXYMesh = new Mesh(plane.IsIndex32Bits, plane.IndexBuffer, plane.VertexBuffer, Matrix.RotationX(-MathUtil.PiOverTwo));
+         var planeBounds = new OrientedBoundingBox(new Vector3(-0.5f, -0.05f, -0.5f), new Vector3(0.5f, 0.05f, 0.5f));
+         var planeXYMesh = new Mesh(plane.IsIndex32Bits, plane.IndexBuffer, plane.VertexBuffer, planeBounds, Matrix.RotationX(-MathUtil.PiOverTwo));
          this.unitPlaneXYMesh = assetService.AddAsset(planeXYMesh);
       }
 
       public AssetHandle TransformMesh(AssetHandle meshHandle, Matrix transformation)
       {
          var oldMesh = assetService.GetAsset<Mesh>(meshHandle);
-         var newMesh = new Mesh(oldMesh.IsIndex32Bits, oldMesh.IndexBuffer, oldMesh.VertexBuffer, oldMesh.ModelTransform * transformation);
+         var newBoundingBox = oldMesh.BoundingBox;
+         newBoundingBox.Transform(transformation);
+         var newMesh = new Mesh(oldMesh.IsIndex32Bits, oldMesh.IndexBuffer, oldMesh.VertexBuffer, newBoundingBox, oldMesh.ModelTransform * transformation);
          return assetService.AddAsset(newMesh);
       }
 

@@ -14,6 +14,9 @@ namespace Shade.Helios
    {
       private readonly Dictionary<string, AssetHandle> loadedAssetsByPath = new Dictionary<string, AssetHandle>(); 
       private readonly IAssetService assetService;
+      private AssetHandle whiteTextureHandle;
+      private AssetHandle redTextureHandle;
+      private AssetHandle limeTextureHandle;
 
       public TextureLoader(Game game, IAssetService assetService) : base(game)
       {
@@ -23,11 +26,24 @@ namespace Shade.Helios
          game.GameSystems.Add(this);
       }
 
+      public AssetHandle WhiteTextureHandle { get { return whiteTextureHandle; } }
+      public AssetHandle RedTextureHandle { get { return redTextureHandle; } }
+      public AssetHandle LimeTextureHandle { get { return limeTextureHandle; } }
+
+      protected override void LoadContent()
+      {
+         base.LoadContent();
+
+         whiteTextureHandle = LoadTexture("SolidColors/white.jpg");
+         redTextureHandle = LoadTexture("SolidColors/red.jpg");
+         limeTextureHandle = LoadTexture("SolidColors/lime.jpg");
+      }
+
       public AssetHandle LoadTexture(string path)
       {
          AssetHandle handle;
          if (!loadedAssetsByPath.TryGetValue(path, out handle)) {
-            var texture = Content.Load<Texture2D>(path);
+            var texture = ToDisposeContent(Content.Load<Texture2D>(path));
             handle = assetService.AddAsset(texture);
             this.loadedAssetsByPath.Add(path, handle);
          }

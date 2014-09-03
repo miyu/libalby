@@ -5,22 +5,19 @@ using Component = Shade.Entities.Component;
 
 namespace Shade.Helios.Entities
 {
-   public class RenderComponent : Component
+   public class ModelComponent : Component
    {
       private readonly AssetHandle diffuseTexture;
       private readonly AssetHandle mesh;
-      private Matrix worldTransform;
 
-      public RenderComponent(AssetHandle diffuseTexture, AssetHandle mesh, Matrix? modelTransform = null)
-         : base(ComponentType.Renderable)
+      public ModelComponent(AssetHandle diffuseTexture, AssetHandle mesh)
+         : base(ComponentType.Model)
       {
          this.diffuseTexture = diffuseTexture;
          this.mesh = mesh;
-         this.worldTransform = modelTransform ?? Matrix.Identity;
       }
 
       public AssetHandle DiffuseTexture { get { return diffuseTexture; } }
       public AssetHandle Mesh { get { return mesh; } }
-      public Matrix WorldTransform { get { return worldTransform; } set { worldTransform = value; } }
    }
 }
