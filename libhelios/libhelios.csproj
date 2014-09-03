@@ -69,6 +69,7 @@
     <Compile Include="EngineGame.cs" />
     <Compile Include="Assets\IAssetService.cs" />
     <Compile Include="Entities\DestinationComponent.cs" />
+    <Compile Include="Entities\ICameraComponent.cs" />
     <Compile Include="Entities\IdentifierComponent.cs" />
     <Compile Include="Entities\OrientationComponent.cs" />
     <Compile Include="Entities\PickableComponent.cs" />

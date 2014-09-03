@@ -23,9 +23,9 @@ namespace Shade.Helios
       {
          base.Update(gameTime);
 
-//         var viewRotationAngle = 0; 
+         var viewRotationAngle = 0; 
 //         var viewRotationAngle = MathUtil.DegreesToRadians(-10.0f); 
-         var viewRotationAngle = (float)(gameTime.TotalGameTime.TotalSeconds * 0.2f);
+//         var viewRotationAngle = (float)(gameTime.TotalGameTime.TotalSeconds * 0.2f);
          var eyePosition = Vector3.Transform(new Vector3(0, 10f, 4f), Quaternion.RotationAxis(Vector3.UnitY, viewRotationAngle));
 
          _view = Matrix.LookAtRH(eyePosition, new Vector3(0, 0, 0), Vector3.UnitY);

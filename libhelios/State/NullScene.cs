@@ -13,5 +13,7 @@ namespace Shade.Helios.State
       public void AddEntity(Entity entity) { throw new InvalidOperationException("Can't add entities to null scene!"); }
 
       public IEnumerable<Entity> EnumerateEntities() { yield break; }
+      public void SetCamera(Entity entity) { }
+      public Entity GetCamera() { return null; }
    }
 }

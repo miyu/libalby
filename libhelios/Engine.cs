@@ -81,14 +81,24 @@ namespace Shade.Helios
             foreach (var entity in scene.EnumerateEntities()) {
                var model = (ModelComponent)entity.GetComponentOrNull(ComponentType.Model);
                var transform = (ITransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
+
+               if (model == null || transform == null) {
+                  continue;
+               }
+
                var diffuseTexture = AssetService.GetAsset<Texture2D>(model.DiffuseTexture);
                var mesh = AssetService.GetAsset<Mesh>(model.Mesh);
 
                basicEffect.LightingEnabled = true;
                basicEffect.Texture = diffuseTexture;
                basicEffect.World = mesh.ModelTransform * transform.WorldTransform;
-               basicEffect.View = CameraService.View;
-               basicEffect.Projection = CameraService.Projection;
+               
+               var camera = scene.GetCamera();
+               var cameraComponent = (ICameraComponent)camera.GetComponentOrNull(ComponentType.Camera);
+               basicEffect.View = cameraComponent.View;
+               basicEffect.Projection = cameraComponent.Projection;
+//               basicEffect.View = CameraService.View;
+//               basicEffect.Projection = CameraService.Projection;
 
                wireframeEffect.World = basicEffect.World;
                wireframeEffect.View = basicEffect.View;

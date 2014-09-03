@@ -121,7 +121,6 @@ namespace Shade.Client
             enemyEntities.Add(enemyEntity);
          }
 
-
          var floorEntity = new Entity();
          floorEntity.AddComponent(new IdentifierComponent("Floor"));
          floorEntity.AddComponent(new ModelComponent(floorTexture, floorMesh));
@@ -137,6 +136,14 @@ namespace Shade.Client
          crateEntity.AddComponent(new PickableComponent(cbb));
          scene.AddEntity(crateEntity);
 
+         var cameraEntity = new Entity();
+         cameraEntity.AddComponent(new IdentifierComponent("Camera"));
+         cameraEntity.AddComponent(new PositionComponent(new Vector3(0, 10f, 4f)));
+         cameraEntity.AddComponent(new OrientationComponent(Quaternion.RotationAxis(Vector3.UnitX, -(float)Math.Atan(10.0f / 4.0f))));
+         cameraEntity.AddComponent(new PositionedOrientedCameraComponent());
+         scene.AddEntity(cameraEntity);
+         scene.SetCamera(cameraEntity);
+
          SceneManager.AddScene(scene);
          SceneManager.ActiveScene = scene;
 
@@ -150,8 +157,9 @@ namespace Shade.Client
 
          var navmesh = new NavMesh();
          var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
-         
-         var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, CameraService.View * CameraService.Projection);
+
+         var cameraComponent = (ICameraComponent)SceneManager.ActiveScene.GetCamera().GetComponentOrNull(ComponentType.Camera);
+         var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, cameraComponent.View * cameraComponent.Projection);
          var projection = plane.Raycast(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
          if (Mouse.Left.Down && projection != null) {
             var r = (IPositionComponent)heroEntity.GetComponentOrNull(ComponentType.Position);
@@ -170,11 +178,20 @@ namespace Shade.Client
                }
             }
          }
-
-         if (Keyboard.IsKeyDown(Keys.Left)) {
-            //SceneManager.ActiveScene.EnumerateEntities().First();
-            //CameraService.NudgeLeft(0);
-         }
+;
+         var cameraOffset = new Vector3();
+         if (Keyboard.IsKeyDown(Keys.Left))
+            cameraOffset += Vector3.Left * (float)gameTime.ElapsedGameTime.TotalSeconds;
+         if (Keyboard.IsKeyDown(Keys.Right))
+            cameraOffset += Vector3.Right * (float)gameTime.ElapsedGameTime.TotalSeconds;
+         if (Keyboard.IsKeyDown(Keys.Up))
+            cameraOffset += Vector3.ForwardRH * (float)gameTime.ElapsedGameTime.TotalSeconds;
+         if (Keyboard.IsKeyDown(Keys.Down))
+            cameraOffset += Vector3.BackwardRH * (float)gameTime.ElapsedGameTime.TotalSeconds;
+         
+         var camera = SceneManager.ActiveScene.GetCamera();
+         var cameraPosition = (IPositionComponent)camera.GetComponentOrNull(ComponentType.Position);
+         cameraPosition.Position += cameraOffset;
       }
 
       public IServiceRegistry Services { get { return base.Services; } }

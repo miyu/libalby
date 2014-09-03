@@ -7,6 +7,8 @@ namespace Shade.Helios.State
    public interface IScene
    {
       void AddEntity(Entity entity);
-      IEnumerable<Entity> EnumerateEntities();  
+      IEnumerable<Entity> EnumerateEntities();
+      void SetCamera(Entity entity);
+      Entity GetCamera();
    }
 }
