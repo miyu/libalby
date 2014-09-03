@@ -127,16 +127,13 @@ namespace Shade.Client
          var navmesh = new NavMesh();
          var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
          
-         //Console.WriteLine(Mouse.X + " " + Mouse.Y);
          var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, CameraService.View * CameraService.Projection);
-         var projection = plane.ProjectRayToSurface(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
-         Console.WriteLine(projection);
-//         projection = plane.PlanarToWorld(new Point2D(1, 0));
+         var projection = plane.Raycast(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
+         if (Mouse.Left.Down && projection != null) {
+            var r = (RenderComponent)heroEntity.GetComponentOrNull(ComponentType.Renderable);
+            r.WorldTransform = Matrix.Translation((float)projection.X, (float)projection.Y, (float)projection.Z);
+         }
 
-         var r = (RenderComponent)heroEntity.GetComponentOrNull(ComponentType.Renderable);
-//         r.WorldTransform = Matrix.Translation(ray.Position + ray.Direction * 10);
-         r.WorldTransform = Matrix.Translation((float)projection.X, (float)projection.Y, (float)projection.Z);
-         Console.WriteLine(ray.Position + " " + ray.Direction);
          if (Keyboard.IsKeyDown(Keys.Left)) {
             //SceneManager.ActiveScene.EnumerateEntities().First();
             //CameraService.NudgeLeft(0);

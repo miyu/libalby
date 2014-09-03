@@ -96,9 +96,13 @@ namespace Shade.Helios.Pathfinding
       private Point2D WorldToPlanar(Point3D vertex)
       {
          var popv = vertex - origin;
-         var a = popv.ScalarProjectionOnto(basis0);
-         var b = popv.ScalarProjectionOnto(basis1);
-         return new Point2D(a, b);
+         if (popv.IsZeroVector()) {
+            return new Point2D(0, 0);
+         } else {
+            var a = popv.ScalarProjectionOnto(basis0);
+            var b = popv.ScalarProjectionOnto(basis1);
+            return new Point2D(a, b);
+         }
       }
 
       public Point3D PlanarToWorld(Point2D vertex)
