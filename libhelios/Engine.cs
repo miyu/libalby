@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using ItzWarty;
+using ItzWarty.Geometry;
 using Shade.Entities;
 using Shade.Helios.Assets;
 using Shade.Helios.Entities;
@@ -23,6 +24,8 @@ namespace Shade.Helios
       private BasicEffect basicEffect;
       private BasicEffect wireframeEffect;
       private RasterizerState wireframeRasterizerState;
+      private Effect debugEffect;
+      private PrimitiveBatch<VertexPositionColor> debugBatch;
 
       public Engine()
       {
@@ -49,6 +52,8 @@ namespace Shade.Helios
 
       protected virtual void HandleGameInitialize()
       {
+         debugBatch = new PrimitiveBatch<VertexPositionColor>(GraphicsDevice);
+
          var wireframeRasterizerStateDescription = RasterizerStateDescription.Default();
          wireframeRasterizerStateDescription.FillMode = FillMode.Wireframe;
          wireframeRasterizerStateDescription.CullMode = CullMode.None;
@@ -63,6 +68,20 @@ namespace Shade.Helios
          wireframeEffect = new BasicEffect(GraphicsDevice);
          wireframeEffect.TextureEnabled = true;
          wireframeEffect.Texture = AssetService.GetAsset<Texture2D>(TextureLoader.WhiteTextureHandle);
+
+         Console.WriteLine("Load Debug Effect");
+         var d = new EffectCompiler().CompileFromFile("Shaders/DebugSolid.hlsl", EffectCompilerFlags.Debug);
+         Console.WriteLine("SUCCESS? " + !d.HasErrors);
+         foreach (var message in d.Logger.Messages) {
+            Console.WriteLine(message.Text);
+         }
+         foreach (var shader in d.EffectData.Shaders) {
+            Console.WriteLine("HAVE SHADER " + shader.Name);
+         }
+         debugEffect = new Effect(GraphicsDevice, d.EffectData, GraphicsDevice.DefaultEffectPool);
+         foreach (var x in debugEffect.Parameters) {
+            Console.WriteLine("PARAMETER " + x.Name);
+         }
       }
 
       protected virtual void HandleGameUpdate(GameTime gameTime)
@@ -80,6 +99,9 @@ namespace Shade.Helios
          {
             GraphicsDevice.Clear(new Color4(new Color3(0x303030)));
 
+            var camera = scene.GetCamera();
+            var cameraComponent = (ICameraComponent)camera.GetComponentOrNull(ComponentType.Camera);
+
             foreach (var entity in scene.EnumerateEntities()) {
                var model = (ModelComponent)entity.GetComponentOrNull(ComponentType.Model);
                var transform = (ITransformComponent)entity.GetComponentOrNull(ComponentType.Transform);
@@ -93,14 +115,9 @@ namespace Shade.Helios
 
                basicEffect.LightingEnabled = true;
                basicEffect.Texture = diffuseTexture;
-               basicEffect.World = mesh.ModelTransform * transform.WorldTransform;
-               
-               var camera = scene.GetCamera();
-               var cameraComponent = (ICameraComponent)camera.GetComponentOrNull(ComponentType.Camera);
+               basicEffect.World = mesh.ModelTransform * transform.WorldTransform;   
                basicEffect.View = cameraComponent.View;
                basicEffect.Projection = cameraComponent.Projection;
-//               basicEffect.View = CameraService.View;
-//               basicEffect.Projection = CameraService.Projection;
 
                wireframeEffect.World = basicEffect.World;
                wireframeEffect.View = basicEffect.View;
@@ -132,7 +149,39 @@ namespace Shade.Helios
                      GraphicsDevice.DrawIndexed(PrimitiveType.TriangleList, mesh.IndexBuffer.ElementCount, 0, 0);
                   }
                }
+            }
 
+            GraphicsDevice.SetRasterizerState(wireframeRasterizerState);
+            debugEffect.DefaultParameters.WorldParameter.SetValue(Matrix.Identity);
+            debugEffect.DefaultParameters.ViewParameter.SetValue(cameraComponent.View);
+            debugEffect.DefaultParameters.ProjectionParameter.SetValue(cameraComponent.Projection);
+            debugEffect.CurrentTechnique.Passes[0].Apply();
+            debugBatch.Begin();
+
+            foreach (var entity in SceneManager.ActiveScene.EnumerateEntities()) {
+               var pathing = entity.GetComponentOrNull<IPathingComponent>(ComponentType.Pathing);
+               if (pathing != null && pathing.Route != null) {
+                  var route = pathing.Route;
+                  var path = route.Path;
+                  Func<Vector3, Vector3> bias = v => new Vector3(v.X, 0.01f, v.Z);
+                  debugBatch.DrawLine(new VertexPositionColor(bias(route.StartPoint), Color.Cyan), new VertexPositionColor(bias(path[0]), Color.Cyan));
+                  for (var i = 0; i < path.Count - 1; i++) {
+                     debugBatch.DrawLine(new VertexPositionColor(bias(path[i]), Color.Cyan), new VertexPositionColor(bias(path[i + 1]), Color.Cyan));
+                  }
+               }
+            }
+
+            var navmesh = SceneManager.ActiveScene.GetNavigationMesh();
+            foreach (var node in navmesh.EnumerateNodes()) {
+               var vertices = node.Vertices;
+               Func<Point3D, Vector3> bias = v => new Vector3((float)v.X, (float)(v.Y + 0.01f), (float)v.Z);
+               for (var i = 0; i < vertices.Length; i++) {
+                  debugBatch.DrawLine(new VertexPositionColor(bias(vertices[i]), Color.Cyan), new VertexPositionColor(bias(vertices[(i + 1) % vertices.Length]), Color.Cyan));
+               }
+            }
+
+            debugBatch.End();
+            /*
                //var box = mesh.BoundingBox;
                //var corners = box.GetCorners();
                //primitives.DrawTriangle(new VertexPositionColor(new Vector3(0, 0, 0), Color.White), new VertexPositionColor(new Vector3(1, 0, 0), Color.White), new VertexPositionColor(new Vector3(1, 0, 1), Color.White));
@@ -140,7 +189,7 @@ namespace Shade.Helios
                //primitives.DrawLine(new VertexPositionColor(corners[1], Color.White), new VertexPositionColor(corners[2], Color.White));
                //primitives.DrawLine(new VertexPositionColor(corners[2], Color.Lime), new VertexPositionColor(corners[3], Color.White));
                //primitives.DrawLine(new VertexPositionColor(corners[3], Color.White), new VertexPositionColor(corners[0], Color.White));
-            }
+             */
 
             //basicEffect.Texture = AssetService.GetAsset<Texture2D>(TextureLoader.WhiteTextureHandle);
             //basicEffect.LightingEnabled = false;

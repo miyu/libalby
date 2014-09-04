@@ -2,6 +2,7 @@
 using System.Data;
 using Shade.Helios.Assets;
 using SharpDX;
+using SharpDX.Direct3D11;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 using SharpDX.Toolkit.Input;
@@ -29,6 +30,7 @@ namespace Shade.Helios
          this.graphicsDeviceManager = new GraphicsDeviceManager(this);
          this.graphicsDeviceManager.PreferredBackBufferWidth = 1600;
          this.graphicsDeviceManager.PreferredBackBufferHeight = 900;
+         this.graphicsDeviceManager.DeviceCreationFlags |= DeviceCreationFlags.Debug;
          this.keyboardManager = new KeyboardManager(this);
          this.mouseSubsystem = new MouseSubsystem(this, graphicsDeviceManager);
          this.sceneRenderer = new SceneRenderer(this);

@@ -53,6 +53,8 @@ namespace Shade.Client
       private const string SHARD_ID = "LOCAL";
 
       private Entity heroEntity;
+      private Scene scene;
+      private NavMesh navmesh;
 
       public Client()
       {
@@ -94,7 +96,12 @@ namespace Shade.Client
          var floorMesh = MeshLoader.TransformMesh(MeshLoader.UnitCubeMesh, Matrix.Translation(0, -0.5f, 0) * Matrix.Scaling(10.0f, 0.5f, 10.0f));
          var crateMesh = MeshLoader.TransformMesh(floorBlockMesh, Matrix.Scaling(0.9f, 0.65f, 0.65f));
 
-         var scene = new Scene();
+         scene = new Scene();
+         navmesh = new NavMesh();
+         var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
+         navmesh.AddNode(plane);
+         scene.SetNavigationMesh(navmesh);
+
          heroEntity = new Entity();
          heroEntity.AddComponent(new IdentifierComponent("Hero"));
          heroEntity.AddComponent(new ModelComponent(heroTexture, heroMesh));
@@ -156,15 +163,11 @@ namespace Shade.Client
       {
          base.HandleGameUpdate(gameTime);
 
-         var navmesh = new NavMesh();
-         var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
-         navmesh.AddNode(plane);
-
          var pathfinder = new Pathfinder(navmesh);
 
          var cameraComponent = (ICameraComponent)SceneManager.ActiveScene.GetCamera().GetComponentOrNull(ComponentType.Camera);
          var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, cameraComponent.View * cameraComponent.Projection);
-         var projection = plane.Raycast(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
+         var projection = scene.GetNavigationMesh().Raycast(new Ray3D(new Point3D(ray.Position.X, ray.Position.Y, ray.Position.Z), new Vector3D(ray.Direction.X, ray.Direction.Y, ray.Direction.Z)));
          if (Mouse.Left.Down && projection != null) {
             var r = (IPositionComponent)heroEntity.GetComponentOrNull(ComponentType.Position);
             r.Position = new Vector3((float)projection.X, (float)projection.Y, (float)projection.Z);

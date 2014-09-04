@@ -1,4 +1,5 @@
-﻿using ItzWarty;
+﻿using System.Collections;
+using ItzWarty;
 using ItzWarty.Geometry;
 using SharpDX;
 using System;
@@ -9,7 +10,7 @@ namespace Shade.Helios.Pathfinding
    public class NavMesh
    {
       private readonly ISet<ConvexPolygonNode> nodes = new HashSet<ConvexPolygonNode>();
-
+      
       public void AddNode(ConvexPolygonNode node) { nodes.Add(node); }
 
       public void Connect(ConvexPolygonNode a, ConvexPolygonNode b)
@@ -21,6 +22,17 @@ namespace Shade.Helios.Pathfinding
          b.Peers.Add(a);
       }
 
+      public Point3D Raycast(Ray3D ray)
+      {
+         foreach (var node in nodes) {
+            var result = node.Raycast(ray);
+            if (result != null) {
+               return result;
+            }
+         }
+         return null;
+      }
+
       public ConvexPolygonNode FindNode(Point3D point)
       {
          foreach (var node in nodes) {
@@ -30,21 +42,27 @@ namespace Shade.Helios.Pathfinding
          }
          return null;
       }
+
+      public IEnumerable<ConvexPolygonNode> EnumerateNodes() { return nodes; } 
    }
 
    public class ConvexPolygonNode
    {
-      private readonly List<ConvexPolygonNode> peers = new List<ConvexPolygonNode>();
+      private const double POSITIVE_EPSILON = 0.00001;
+      private const double NEGATIVE_EPSILON = -0.00001;
+
+      private readonly Point3D[] vertices;
       private readonly Point3D origin;
       private readonly Vector3D normal;
       private readonly Vector3D basis0;
       private readonly Vector3D basis1;
       private readonly IReadOnlyList<Point2D> pointsInBasis;
-      private const double POSITIVE_EPSILON = 0.00001;
-      private const double NEGATIVE_EPSILON = -0.00001;
+      private readonly List<ConvexPolygonNode> peers = new List<ConvexPolygonNode>();
 
       public ConvexPolygonNode(Point3D[] vertices)
       {
+         this.vertices = vertices;
+
          var p0 = vertices[0];
          var p1 = vertices[1];
          var p2 = vertices[2];
@@ -62,6 +80,8 @@ namespace Shade.Helios.Pathfinding
          this.pointsInBasis = Util.Generate(vertices.Length, i => WorldToPlanar(vertices[i]));
       }
 
+      public Point3D[] Vertices { get { return vertices; } }
+      
       public List<ConvexPolygonNode> Peers { get { return peers; } }
 
       public Point3D Raycast(Ray3D ray)
