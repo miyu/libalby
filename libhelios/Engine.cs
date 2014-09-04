@@ -3,6 +3,7 @@ using ItzWarty;
 using Shade.Entities;
 using Shade.Helios.Assets;
 using Shade.Helios.Entities;
+using Shade.Helios.State;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.Toolkit;
@@ -66,6 +67,7 @@ namespace Shade.Helios
 
       protected virtual void HandleGameUpdate(GameTime gameTime)
       {
+         SceneManager.ActiveScene.Update(gameTime);
       }
 
       protected virtual void HandleGameDraw(GameTime gameTime)

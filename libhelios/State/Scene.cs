@@ -12,6 +12,7 @@ namespace Shade.Helios.State
       public Scene()
       {
          AddSystem(new PositionOrientationScaleToTransformSystem());
+         AddSystem(new PathFollowingSystem());
       }
 
       public void SetCamera(Entity cameraEntity) { this.cameraEntity = cameraEntity; }

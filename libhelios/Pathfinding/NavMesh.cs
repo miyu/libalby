@@ -20,6 +20,16 @@ namespace Shade.Helios.Pathfinding
          a.Peers.Add(b);
          b.Peers.Add(a);
       }
+
+      public ConvexPolygonNode FindNode(Point3D point)
+      {
+         foreach (var node in nodes) {
+            if (node.ContainsPoint(point)) {
+               return node;
+            }
+         }
+         return null;
+      }
    }
 
    public class ConvexPolygonNode
@@ -60,14 +70,15 @@ namespace Shade.Helios.Pathfinding
          if (pointOnPlane == null) {
             return null;
          } else {
-            var pointInPlaneSpace = WorldToPlanar(pointOnPlane);
-            if (ContainsPoint(pointInPlaneSpace)) {
+            if (ContainsPoint(pointOnPlane)) {
                return pointOnPlane;
             } else {
                return null;
             }
          }
       }
+
+      public bool ContainsPoint(Point3D pointInWorldSpace) { return ContainsPoint(WorldToPlanar(pointInWorldSpace)); }
 
       private bool ContainsPoint(Point2D pointInPlaneSpace)
       {

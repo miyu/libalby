@@ -101,7 +101,8 @@ namespace Shade.Client
          heroEntity.AddComponent(new PositionComponent(new Vector3(0, 0, 0)));
          heroEntity.AddComponent(new ScaleComponent(new Vector3(1, 1, 1)));
          heroEntity.AddComponent(new OrientationComponent(Quaternion.RotationAxis(new Vector3(0, 1, 0), MathUtil.DegreesToRadians(10.0f))));
-         //heroEntity.AddComponent(new TransformComponent(Matrix.RotationY(10f * (float)Math.PI / 180f)));
+         heroEntity.AddComponent(new SpeedComponent(2.0f));
+         heroEntity.AddComponent(new PathingComponent(new PathingRoute(new Vector3(0,0,0), new Vector3(5, 0, 5), new List<Vector3>{new Vector3(5,0,5)})));
          var hbb = AssetService.GetAsset<Mesh>(heroMesh).BoundingBox;
          hbb.Transform(Matrix.Scaling(1.1f));
          heroEntity.AddComponent(new PickableComponent(hbb));
@@ -157,6 +158,9 @@ namespace Shade.Client
 
          var navmesh = new NavMesh();
          var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
+         navmesh.AddNode(plane);
+
+         var pathfinder = new Pathfinder(navmesh);
 
          var cameraComponent = (ICameraComponent)SceneManager.ActiveScene.GetCamera().GetComponentOrNull(ComponentType.Camera);
          var ray = Ray.GetPickRay(Mouse.X, Mouse.Y, this.GraphicsDevice.Viewport, cameraComponent.View * cameraComponent.Projection);
@@ -164,6 +168,12 @@ namespace Shade.Client
          if (Mouse.Left.Down && projection != null) {
             var r = (IPositionComponent)heroEntity.GetComponentOrNull(ComponentType.Position);
             r.Position = new Vector3((float)projection.X, (float)projection.Y, (float)projection.Z);
+         }
+         if (Mouse.Right.Down && projection != null) {
+            var heroPosition = heroEntity.GetComponentOrNull<IPositionComponent>(ComponentType.Position).Position;
+            var path = pathfinder.FindPath(heroPosition, new Vector3((float)projection.X, (float)projection.Y, (float)projection.Z));
+            heroEntity.GetComponentOrNull<IPathingComponent>(ComponentType.Pathing).Route = path;
+            //            Console.WriteLine("Path from " + navmesh.FindNode(new Point3D(heroPosition.X, heroPosition.Y, heroPosition.Z)) +  " to " + navmesh.FindNode(projection));
          }
 
          foreach (var entity in SceneManager.ActiveScene.EnumerateEntities()) {
@@ -180,14 +190,15 @@ namespace Shade.Client
          }
 ;
          var cameraOffset = new Vector3();
+         float cameraSpeed = 15.0f; 
          if (Keyboard.IsKeyDown(Keys.Left))
-            cameraOffset += Vector3.Left * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            cameraOffset += Vector3.Left * (float)gameTime.ElapsedGameTime.TotalSeconds * cameraSpeed;
          if (Keyboard.IsKeyDown(Keys.Right))
-            cameraOffset += Vector3.Right * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            cameraOffset += Vector3.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * cameraSpeed;
          if (Keyboard.IsKeyDown(Keys.Up))
-            cameraOffset += Vector3.ForwardRH * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            cameraOffset += Vector3.ForwardRH * (float)gameTime.ElapsedGameTime.TotalSeconds * cameraSpeed;
          if (Keyboard.IsKeyDown(Keys.Down))
-            cameraOffset += Vector3.BackwardRH * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            cameraOffset += Vector3.BackwardRH * (float)gameTime.ElapsedGameTime.TotalSeconds * cameraSpeed;
          
          var camera = SceneManager.ActiveScene.GetCamera();
          var cameraPosition = (IPositionComponent)camera.GetComponentOrNull(ComponentType.Position);

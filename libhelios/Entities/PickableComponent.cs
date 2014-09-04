@@ -25,5 +25,7 @@ namespace Shade.Helios.Entities
             return hbb;
          }
       }
+
+      public bool IsHovered { get; private set; }
    }
 }

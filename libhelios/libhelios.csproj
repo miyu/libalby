@@ -68,7 +68,7 @@
     <Compile Include="CameraProvider.cs" />
     <Compile Include="EngineGame.cs" />
     <Compile Include="Assets\IAssetService.cs" />
-    <Compile Include="Entities\DestinationComponent.cs" />
+    <Compile Include="Entities\PathingComponent.cs" />
     <Compile Include="Entities\ICameraComponent.cs" />
     <Compile Include="Entities\IdentifierComponent.cs" />
     <Compile Include="Entities\OrientationComponent.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="Entities\PositionComponent.cs" />
     <Compile Include="Entities\ScaleComponent.cs" />
     <Compile Include="Entities\SpeedComponent.cs" />
+    <Compile Include="Entities\Systems\PathFollowingSystem.cs" />
     <Compile Include="Entities\Systems\PositionOrientationScaleToTransformSystem.cs" />
     <Compile Include="Entities\TransformComponent.cs" />
     <Compile Include="ICameraService.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Mesh.cs" />
     <Compile Include="MouseSubsystem.cs" />
     <Compile Include="Pathfinding\NavMesh.cs" />
+    <Compile Include="Pathfinding\Pathfinder.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SceneManager.cs" />
     <Compile Include="State\IScene.cs" />
