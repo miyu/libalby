@@ -26,6 +26,8 @@ namespace Shade.Helios.Entities
          }
       }
 
+      public bool IsTargetable { get; private set; }
+
       public bool IsHovered { get; private set; }
    }
 }

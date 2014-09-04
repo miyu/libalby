@@ -1,6 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using ItzWarty;
 using ItzWarty.Geometry;
+using Poly2Tri;
 using Shade.Entities;
 using Shade.Helios.Assets;
 using Shade.Helios.Entities;
@@ -151,6 +154,7 @@ namespace Shade.Helios
                }
             }
 
+            GraphicsDevice.SetBlendState(GraphicsDevice.BlendStates.AlphaBlend);
             GraphicsDevice.SetRasterizerState(wireframeRasterizerState);
             debugEffect.DefaultParameters.WorldParameter.SetValue(Matrix.Identity);
             debugEffect.DefaultParameters.ViewParameter.SetValue(cameraComponent.View);
@@ -171,12 +175,36 @@ namespace Shade.Helios
                }
             }
 
-            var navmesh = SceneManager.ActiveScene.GetNavigationMesh();
-            foreach (var node in navmesh.EnumerateNodes()) {
-               var vertices = node.Vertices;
-               Func<Point3D, Vector3> bias = v => new Vector3((float)v.X, (float)(v.Y + 0.01f), (float)v.Z);
-               for (var i = 0; i < vertices.Length; i++) {
-                  debugBatch.DrawLine(new VertexPositionColor(bias(vertices[i]), Color.Cyan), new VertexPositionColor(bias(vertices[(i + 1) % vertices.Length]), Color.Cyan));
+//            var navmesh = SceneManager.ActiveScene.GetNavigationMesh();
+//            foreach (var node in navmesh.EnumerateNodes()) {
+//               var vertices = node.Vertices;
+//               Func<Point3D, Vector3> bias = v => new Vector3((float)v.X, (float)(v.Y + 0.01f), (float)v.Z);
+//               for (var i = 0; i < vertices.Length; i++) {
+//                  debugBatch.DrawLine(new VertexPositionColor(bias(vertices[i]), Color.Cyan), new VertexPositionColor(bias(vertices[(i + 1) % vertices.Length]), Color.Cyan));
+//               }
+//            }
+
+            var polygon = new Polygon(new List<PolygonPoint> { new PolygonPoint(-5, -5), new PolygonPoint(-5,-2), new PolygonPoint(-5, 2), new PolygonPoint(-5, 5), new PolygonPoint(-2, 5), new PolygonPoint(2, 5), new PolygonPoint(5, 5), new PolygonPoint(5, 2), new PolygonPoint(5,-2), new PolygonPoint(5, -5), new PolygonPoint(2, -5), new PolygonPoint(-2, -5) });
+            polygon.AddHole(new Polygon(new List<PolygonPoint> { new PolygonPoint(2.2f, 1.5f), new PolygonPoint(3.5f, 0.8f), new PolygonPoint(3.9f, 1.6f), new PolygonPoint(2.7f, 2.3f) }));
+            P2T.Triangulate(polygon);
+            foreach (var triangle in polygon.Triangles) {
+               var triangleCentroid = triangle.Centroid();
+               var points = triangle.Points;
+               float bias = 0.01f;
+               var fillColor = Color.Premultiply(new Color(0.0f, 1.0f, 1.0f, 0.8f));
+               debugBatch.DrawTriangle(
+                  new VertexPositionColor(new Vector3(points._0.Xf, bias, points._0.Yf), fillColor),
+                  new VertexPositionColor(new Vector3(points._1.Xf, bias, points._1.Yf), fillColor),
+                  new VertexPositionColor(new Vector3(points._2.Xf, bias, points._2.Yf), fillColor) 
+               );
+
+               foreach (var neighbor in triangle.Neighbors.Where((n) => n != null && n.IsInterior))
+               {
+                  var neighborCentroid = neighbor.Centroid();
+                  debugBatch.DrawLine(
+                     new VertexPositionColor(new Vector3(triangleCentroid.Xf, bias, triangleCentroid.Yf), Color.Red),
+                     new VertexPositionColor(new Vector3(neighborCentroid.Xf, bias, neighborCentroid.Yf), Color.Red) 
+                  );
                }
             }
 

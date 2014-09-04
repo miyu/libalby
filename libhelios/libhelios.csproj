@@ -71,6 +71,7 @@
     <Compile Include="CameraProvider.cs" />
     <Compile Include="EngineGame.cs" />
     <Compile Include="Assets\IAssetService.cs" />
+    <Compile Include="Entities\NavmeshModificationComponent.cs" />
     <Compile Include="Entities\PathingComponent.cs" />
     <Compile Include="Entities\ICameraComponent.cs" />
     <Compile Include="Entities\IdentifierComponent.cs" />
@@ -174,6 +175,10 @@
     <ProjectReference Include="..\libalby.csproj">
       <Project>{B70AA658-A5AE-4FD4-B7C1-BBBCC72D3621}</Project>
       <Name>libalby</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\third-party\Poly2Tri\Poly2Tri.csproj">
+      <Project>{C5E5802D-6A45-4FE9-BAE7-5F0AE91D72C1}</Project>
+      <Name>Poly2Tri</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
