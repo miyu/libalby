@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using ItzWarty.Geometry;
 using NLog;
 using Poly2Tri;
+using Shade.Alby;
 using Shade.Entities;
 using Shade.Helios;
 using Shade.Helios.Entities;
@@ -98,10 +99,19 @@ namespace Shade.Client
          var floorMesh = MeshLoader.TransformMesh(MeshLoader.UnitCubeMesh, Matrix.Translation(0, -0.5f, 0) * Matrix.Scaling(10.0f, 0.5f, 10.0f));
          var crateMesh = MeshLoader.TransformMesh(floorBlockMesh, Matrix.Scaling(0.9f, 0.65f, 0.65f));
 
+         //----------------------------------------------------------------------------------------
+         // Initialize Scene
+         //----------------------------------------------------------------------------------------
          scene = new Scene();
+
+         // :: Generate Grid and Navmesh 
+         var squareGrid = new SquareGrid(2, 1);
+         var manipulator = new SquareGridManipulator(squareGrid);
+         manipulator.FillRegion(0, 0);
+
          navmesh = new NavMesh();
-         var plane = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(5, 0, -5), new Point3D(5, 0, 5), new Point3D(-5, 0, 5) });
-         navmesh.AddNode(plane);
+         var plane1 = new ConvexPolygonNode(new[] { new Point3D(-5, 0, -5), new Point3D(-5, 0, 5), new Point3D(5, 0, 5), new Point3D(5, 0, 2), new Point3D(5, 0, -2), new Point3D(5, 0, -5) });
+         navmesh.AddNode(plane1);
          scene.SetNavigationMesh(navmesh);
 
          heroEntity = new Entity();
@@ -111,7 +121,7 @@ namespace Shade.Client
          heroEntity.AddComponent(new ScaleComponent(new Vector3(1, 1, 1)));
          heroEntity.AddComponent(new OrientationComponent(Quaternion.RotationAxis(new Vector3(0, 1, 0), MathUtil.DegreesToRadians(10.0f))));
          heroEntity.AddComponent(new SpeedComponent(2.0f));
-         heroEntity.AddComponent(new PathingComponent(new PathingRoute(new Vector3(0,0,0), new Vector3(1, 0, 1), new List<Vector3>{new Vector3(1,0,1)})));
+         heroEntity.AddComponent(new PathingComponent(new PathingRoute(new Vector3(0,0,0), new Vector3(5, 0, 5), new List<Vector3>{new Vector3(5,0,5)})));
          var hbb = AssetService.GetAsset<Mesh>(heroMesh).BoundingBox;
          hbb.Transform(Matrix.Scaling(1.1f));
          heroEntity.AddComponent(new PickableComponent(hbb));

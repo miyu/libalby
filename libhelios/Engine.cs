@@ -184,14 +184,16 @@ namespace Shade.Helios
 //               }
 //            }
 
-            var polygon = new Polygon(new List<PolygonPoint> { new PolygonPoint(-5, -5), new PolygonPoint(-5,-2), new PolygonPoint(-5, 2), new PolygonPoint(-5, 5), new PolygonPoint(-2, 5), new PolygonPoint(2, 5), new PolygonPoint(5, 5), new PolygonPoint(5, 2), new PolygonPoint(5,-2), new PolygonPoint(5, -5), new PolygonPoint(2, -5), new PolygonPoint(-2, -5) });
-            polygon.AddHole(new Polygon(new List<PolygonPoint> { new PolygonPoint(2.2f, 1.5f), new PolygonPoint(3.5f, 0.8f), new PolygonPoint(3.9f, 1.6f), new PolygonPoint(2.7f, 2.3f) }));
+            //var polygon = new Polygon(new List<PolygonPoint> { new PolygonPoint(-5, -5), new PolygonPoint(-5,-2), new PolygonPoint(-5, 2), new PolygonPoint(-5, 5), new PolygonPoint(-2, 5), new PolygonPoint(2, 5), new PolygonPoint(5, 5), new PolygonPoint(5, 2), new PolygonPoint(5,-2), new PolygonPoint(5, -5), new PolygonPoint(2, -5), new PolygonPoint(-2, -5) });
+//            polygon.AddHole(new Polygon(new List<PolygonPoint> { new PolygonPoint(2.2f, 1.5f), new PolygonPoint(3.5f, 0.8f), new PolygonPoint(3.9f, 1.6f), new PolygonPoint(2.7f, 2.3f) }));
+            var polygon = new Polygon(new List<PolygonPoint> { new PolygonPoint(-5, -5), new PolygonPoint(-5, 5), new PolygonPoint(5, 0), new PolygonPoint(0, 0) });
+            //polygon.AddRange(new Polygon(new List<PolygonPoint>{new PolygonPoint(4, 1), new PolygonPoint(6, 1), new PolygonPoint(6,-1), new PolygonPoint(4, -1)}));
             P2T.Triangulate(polygon);
             foreach (var triangle in polygon.Triangles) {
                var triangleCentroid = triangle.Centroid();
                var points = triangle.Points;
                float bias = 0.01f;
-               var fillColor = Color.Premultiply(new Color(0.0f, 1.0f, 1.0f, 0.8f));
+               var fillColor = Color.Premultiply(new Color(0.0f, 1.0f, 1.0f, 1.0f));
                debugBatch.DrawTriangle(
                   new VertexPositionColor(new Vector3(points._0.Xf, bias, points._0.Yf), fillColor),
                   new VertexPositionColor(new Vector3(points._1.Xf, bias, points._1.Yf), fillColor),
