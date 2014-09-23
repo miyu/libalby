@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libshade.common", "..\libsh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poly2Tri", "third-party\Poly2Tri\Poly2Tri.csproj", "{C5E5802D-6A45-4FE9-BAE7-5F0AE91D72C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libshade.geometry", "..\libshade.geometry\libshade.geometry.csproj", "{01ACA576-D8DE-4942-A22B-35D0711A3EE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -535,6 +537,18 @@ Global
 		{C5E5802D-6A45-4FE9-BAE7-5F0AE91D72C1}.TempBuild|Any CPU.Build.0 = Release|Any CPU
 		{C5E5802D-6A45-4FE9-BAE7-5F0AE91D72C1}.TempBuild|x86.ActiveCfg = Release|x86
 		{C5E5802D-6A45-4FE9-BAE7-5F0AE91D72C1}.TempBuild|x86.Build.0 = Release|x86
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.DummyPlatform|Any CPU.ActiveCfg = Debug|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.DummyPlatform|Any CPU.Build.0 = Debug|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.DummyPlatform|x86.ActiveCfg = Debug|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.TempBuild|Any CPU.Build.0 = Release|Any CPU
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7}.TempBuild|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -573,5 +587,6 @@ Global
 		{96407E86-0D6D-4451-8CC4-7E2A13FDA2A2} = {208CEF52-07EC-425E-BF7D-F1C1EF5F1CC2}
 		{1CD7C44E-9808-44D4-B59A-ADE7AA64A846} = {57EACEC4-B637-49A0-B9EC-6195ABD7E1A3}
 		{B2A0957D-40A4-4908-A597-AD6000B045FD} = {32904F9B-14E9-4FEB-820F-5D0A90B5F573}
+		{01ACA576-D8DE-4942-A22B-35D0711A3EE7} = {32904F9B-14E9-4FEB-820F-5D0A90B5F573}
 	EndGlobalSection
 EndGlobal
